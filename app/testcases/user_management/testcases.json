@@ -1,0 +1,449 @@
+[
+  {
+    "id": "TC-USER-001",
+    "priority": "high",
+    "type": "functional",
+    "title": "User Registration with Valid Details",
+    "preconditions": [
+      "Application is accessible",
+      "Registration page is available",
+      "Email address is not already registered"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Navigate to registration page",
+        "expected": "Registration form is displayed"
+      },
+      {
+        "step_number": 2,
+        "action": "Enter valid first name and last name",
+        "expected": "Names are accepted in the fields"
+      },
+      {
+        "step_number": 3,
+        "action": "Enter valid email address",
+        "expected": "Email format is validated and accepted"
+      },
+      {
+        "step_number": 4,
+        "action": "Enter strong password meeting requirements",
+        "expected": "Password strength indicator shows strong"
+      },
+      {
+        "step_number": 5,
+        "action": "Re-enter password in confirm password field",
+        "expected": "Passwords match validation passes"
+      },
+      {
+        "step_number": 6,
+        "action": "Accept terms and conditions",
+        "expected": "Checkbox is checked"
+      },
+      {
+        "step_number": 7,
+        "action": "Click 'Register' button",
+        "expected": "Account is created successfully"
+      },
+      {
+        "step_number": 8,
+        "action": "Verify confirmation message or email",
+        "expected": "Success message displayed and/or confirmation email sent"
+      }
+    ],
+    "expected_results": [
+      "User account is created successfully",
+      "Confirmation email is sent",
+      "User can login with new credentials",
+      "User data is stored securely"
+    ],
+    "grounding_docs": [
+      "product_specs.md",
+      "legal_constraints.md"
+    ],
+    "estimated_duration": "2 minutes"
+  },
+  {
+    "id": "TC-USER-002",
+    "priority": "medium",
+    "type": "negative",
+    "title": "Registration with Already Existing Email",
+    "preconditions": [
+      "Registration page is accessible",
+      "An account with specific email already exists"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Navigate to registration page",
+        "expected": "Registration form loads"
+      },
+      {
+        "step_number": 2,
+        "action": "Enter all required details",
+        "expected": "Form is filled"
+      },
+      {
+        "step_number": 3,
+        "action": "Use email address that is already registered",
+        "expected": "Email is entered"
+      },
+      {
+        "step_number": 4,
+        "action": "Click 'Register' button",
+        "expected": "System validates email uniqueness"
+      },
+      {
+        "step_number": 5,
+        "action": "Verify error message is displayed",
+        "expected": "Error: 'This email is already registered' or similar"
+      },
+      {
+        "step_number": 6,
+        "action": "Verify user is not created",
+        "expected": "No duplicate account is created"
+      }
+    ],
+    "expected_results": [
+      "Duplicate registration is prevented",
+      "Clear error message is displayed",
+      "User can try with different email",
+      "Option to login or recover password is provided"
+    ],
+    "grounding_docs": [
+      "product_specs.md"
+    ],
+    "estimated_duration": "1 minute"
+  },
+  {
+    "id": "TC-USER-003",
+    "priority": "high",
+    "type": "functional",
+    "title": "View and Edit User Profile",
+    "preconditions": [
+      "User is logged in",
+      "User profile page is accessible"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Navigate to user profile page",
+        "expected": "Profile page displays with current user information"
+      },
+      {
+        "step_number": 2,
+        "action": "Verify all profile fields are populated correctly",
+        "expected": "Name, email, phone, address fields show current data"
+      },
+      {
+        "step_number": 3,
+        "action": "Click 'Edit Profile' button",
+        "expected": "Form fields become editable"
+      },
+      {
+        "step_number": 4,
+        "action": "Modify phone number and address",
+        "expected": "Changes are entered in fields"
+      },
+      {
+        "step_number": 5,
+        "action": "Click 'Save Changes' button",
+        "expected": "Updates are saved"
+      },
+      {
+        "step_number": 6,
+        "action": "Verify success message is displayed",
+        "expected": "Message: 'Profile updated successfully'"
+      },
+      {
+        "step_number": 7,
+        "action": "Refresh page and verify changes persist",
+        "expected": "Updated information is displayed"
+      }
+    ],
+    "expected_results": [
+      "Profile updates are saved successfully",
+      "Changes are reflected immediately",
+      "Data persists across sessions",
+      "Validation is applied to edited fields"
+    ],
+    "grounding_docs": [
+      "product_specs.md",
+      "ui_ux_guide.md"
+    ],
+    "estimated_duration": "1.5 minutes"
+  },
+  {
+    "id": "TC-USER-004",
+    "priority": "high",
+    "type": "security",
+    "title": "Change User Password",
+    "preconditions": [
+      "User is logged in",
+      "User knows current password"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Navigate to account settings or security page",
+        "expected": "Settings page loads"
+      },
+      {
+        "step_number": 2,
+        "action": "Click 'Change Password' option",
+        "expected": "Password change form is displayed"
+      },
+      {
+        "step_number": 3,
+        "action": "Enter current password",
+        "expected": "Current password field is filled"
+      },
+      {
+        "step_number": 4,
+        "action": "Enter new password meeting complexity requirements",
+        "expected": "New password is accepted"
+      },
+      {
+        "step_number": 5,
+        "action": "Confirm new password",
+        "expected": "Passwords match"
+      },
+      {
+        "step_number": 6,
+        "action": "Click 'Update Password' button",
+        "expected": "Password is changed"
+      },
+      {
+        "step_number": 7,
+        "action": "Verify success message and logout",
+        "expected": "User is logged out for security"
+      },
+      {
+        "step_number": 8,
+        "action": "Login with new password",
+        "expected": "Login succeeds with new credentials"
+      }
+    ],
+    "expected_results": [
+      "Password is changed successfully",
+      "Old password no longer works",
+      "New password is required for login",
+      "Password change is logged for security"
+    ],
+    "grounding_docs": [
+      "legal_constraints.md",
+      "admin_manual.md"
+    ],
+    "estimated_duration": "2 minutes"
+  },
+  {
+    "id": "TC-USER-005",
+    "priority": "medium",
+    "type": "functional",
+    "title": "Upload and Update Profile Picture",
+    "preconditions": [
+      "User is logged in",
+      "Valid image file is available"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Navigate to user profile page",
+        "expected": "Profile page loads"
+      },
+      {
+        "step_number": 2,
+        "action": "Click on profile picture or 'Upload Photo' button",
+        "expected": "File upload dialog opens"
+      },
+      {
+        "step_number": 3,
+        "action": "Select valid image file (JPG/PNG under size limit)",
+        "expected": "File is selected"
+      },
+      {
+        "step_number": 4,
+        "action": "Click 'Upload' or 'Save'",
+        "expected": "Image is uploaded and processed"
+      },
+      {
+        "step_number": 5,
+        "action": "Verify new profile picture is displayed",
+        "expected": "Updated image appears in profile"
+      },
+      {
+        "step_number": 6,
+        "action": "Refresh page and verify image persists",
+        "expected": "Profile picture remains updated"
+      }
+    ],
+    "expected_results": [
+      "Profile picture uploads successfully",
+      "Image is properly sized and displayed",
+      "Old image is replaced",
+      "Image persists across sessions"
+    ],
+    "grounding_docs": [
+      "product_specs.md",
+      "ui_ux_guide.md"
+    ],
+    "estimated_duration": "1.5 minutes"
+  },
+  {
+    "id": "TC-USER-006",
+    "priority": "medium",
+    "type": "negative",
+    "title": "Upload Invalid File Type as Profile Picture",
+    "preconditions": [
+      "User is logged in on profile page"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Click 'Upload Photo' button",
+        "expected": "File upload dialog opens"
+      },
+      {
+        "step_number": 2,
+        "action": "Select invalid file type (e.g., .txt, .pdf, .exe)",
+        "expected": "File is selected"
+      },
+      {
+        "step_number": 3,
+        "action": "Attempt to upload",
+        "expected": "System validates file type"
+      },
+      {
+        "step_number": 4,
+        "action": "Verify error message is displayed",
+        "expected": "Error: 'Invalid file type. Please upload JPG, PNG, or GIF'"
+      },
+      {
+        "step_number": 5,
+        "action": "Verify profile picture is not changed",
+        "expected": "Original or default picture remains"
+      }
+    ],
+    "expected_results": [
+      "Invalid file types are rejected",
+      "Clear error message guides user",
+      "Profile picture remains unchanged",
+      "System security is maintained"
+    ],
+    "grounding_docs": [
+      "product_specs.md",
+      "legal_constraints.md"
+    ],
+    "estimated_duration": "1 minute"
+  },
+  {
+    "id": "TC-USER-007",
+    "priority": "high",
+    "type": "functional",
+    "title": "Delete User Account",
+    "preconditions": [
+      "User is logged in",
+      "Account deletion feature is available"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Navigate to account settings",
+        "expected": "Settings page loads"
+      },
+      {
+        "step_number": 2,
+        "action": "Locate 'Delete Account' option",
+        "expected": "Delete account button/link is visible"
+      },
+      {
+        "step_number": 3,
+        "action": "Click 'Delete Account'",
+        "expected": "Confirmation dialog appears"
+      },
+      {
+        "step_number": 4,
+        "action": "Read warning message about data deletion",
+        "expected": "Clear warning is displayed"
+      },
+      {
+        "step_number": 5,
+        "action": "Enter password or confirm deletion",
+        "expected": "Security confirmation is required"
+      },
+      {
+        "step_number": 6,
+        "action": "Click 'Confirm Delete'",
+        "expected": "Account deletion is processed"
+      },
+      {
+        "step_number": 7,
+        "action": "Verify account is deleted and user is logged out",
+        "expected": "User cannot login with deleted credentials"
+      }
+    ],
+    "expected_results": [
+      "Account is deleted successfully",
+      "All personal data is removed per privacy policy",
+      "User cannot login after deletion",
+      "Confirmation email is sent"
+    ],
+    "grounding_docs": [
+      "legal_constraints.md",
+      "product_specs.md"
+    ],
+    "estimated_duration": "2 minutes"
+  },
+  {
+    "id": "TC-USER-008",
+    "priority": "medium",
+    "type": "ui",
+    "title": "Password Strength Indicator During Registration",
+    "preconditions": [
+      "User is on registration page"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Navigate to registration page",
+        "expected": "Registration form loads"
+      },
+      {
+        "step_number": 2,
+        "action": "Click in password field",
+        "expected": "Password strength indicator appears"
+      },
+      {
+        "step_number": 3,
+        "action": "Enter weak password (e.g., '123')",
+        "expected": "Indicator shows 'Weak' in red"
+      },
+      {
+        "step_number": 4,
+        "action": "Enter medium strength password (e.g., 'password123')",
+        "expected": "Indicator shows 'Medium' in yellow/orange"
+      },
+      {
+        "step_number": 5,
+        "action": "Enter strong password (e.g., 'P@ssw0rd!2024')",
+        "expected": "Indicator shows 'Strong' in green"
+      },
+      {
+        "step_number": 6,
+        "action": "Verify password requirements are displayed",
+        "expected": "Requirements list shows what is needed (length, special chars, etc.)"
+      }
+    ],
+    "expected_results": [
+      "Password strength is indicated in real-time",
+      "Visual feedback helps user create strong password",
+      "Requirements are clearly stated",
+      "User experience is enhanced"
+    ],
+    "grounding_docs": [
+      "ui_ux_guide.md",
+      "legal_constraints.md"
+    ],
+    "estimated_duration": "1 minute"
+  }
+]

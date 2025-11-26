@@ -1,0 +1,11 @@
+Generate comprehensive test cases for the following feature:
+
+Feature: {feature_name}
+
+Requirements:
+{requirements_description}
+
+Test Types: {test_types}
+Priority Levels: {priority_levels}
+
+Context will be provided from documentation via RAG retrieval.

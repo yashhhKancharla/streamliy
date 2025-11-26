@@ -1,0 +1,376 @@
+[
+  {
+    "id": "TC-AUTH-001",
+    "priority": "high",
+    "type": "functional",
+    "title": "Valid User Login with Correct Credentials",
+    "preconditions": [
+      "Application is accessible",
+      "Valid user account exists in the system",
+      "User is not already logged in"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Navigate to the login page",
+        "expected": "Login page loads successfully with email and password fields visible"
+      },
+      {
+        "step_number": 2,
+        "action": "Enter valid email address in email field",
+        "expected": "Email is accepted and displayed in the field"
+      },
+      {
+        "step_number": 3,
+        "action": "Enter valid password in password field",
+        "expected": "Password is masked and accepted"
+      },
+      {
+        "step_number": 4,
+        "action": "Click on the 'Login' button",
+        "expected": "System processes authentication request"
+      },
+      {
+        "step_number": 5,
+        "action": "Verify successful login",
+        "expected": "User is redirected to dashboard/home page with welcome message"
+      }
+    ],
+    "expected_results": [
+      "User successfully logs in",
+      "Session token is generated",
+      "User dashboard is displayed",
+      "Welcome message shows user's name"
+    ],
+    "grounding_docs": [
+      "product_specs.md",
+      "admin_manual.md"
+    ],
+    "estimated_duration": "45 seconds"
+  },
+  {
+    "id": "TC-AUTH-002",
+    "priority": "high",
+    "type": "negative",
+    "title": "Login Attempt with Invalid Credentials",
+    "preconditions": [
+      "Application is accessible",
+      "Login page is loaded"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Navigate to the login page",
+        "expected": "Login page loads successfully"
+      },
+      {
+        "step_number": 2,
+        "action": "Enter invalid/non-existent email address",
+        "expected": "Email is entered in the field"
+      },
+      {
+        "step_number": 3,
+        "action": "Enter incorrect password",
+        "expected": "Password is masked and entered"
+      },
+      {
+        "step_number": 4,
+        "action": "Click on the 'Login' button",
+        "expected": "System attempts authentication"
+      },
+      {
+        "step_number": 5,
+        "action": "Verify error message is displayed",
+        "expected": "Error message 'Invalid email or password' is shown"
+      }
+    ],
+    "expected_results": [
+      "Login is denied",
+      "Appropriate error message is displayed",
+      "User remains on login page",
+      "No session token is created"
+    ],
+    "grounding_docs": [
+      "product_specs.md",
+      "legal_constraints.md"
+    ],
+    "estimated_duration": "30 seconds"
+  },
+  {
+    "id": "TC-AUTH-003",
+    "priority": "high",
+    "type": "security",
+    "title": "Session Expiration After Timeout Period",
+    "preconditions": [
+      "User is logged in successfully",
+      "Session timeout is configured (e.g., 30 minutes)"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Login successfully to the application",
+        "expected": "User is authenticated and session is active"
+      },
+      {
+        "step_number": 2,
+        "action": "Remain inactive for the configured timeout period",
+        "expected": "System tracks inactivity time"
+      },
+      {
+        "step_number": 3,
+        "action": "Attempt to perform any action after timeout",
+        "expected": "Session is expired"
+      },
+      {
+        "step_number": 4,
+        "action": "Verify redirect to login page",
+        "expected": "User is redirected to login page with session expired message"
+      }
+    ],
+    "expected_results": [
+      "Session expires after configured timeout",
+      "User is redirected to login page",
+      "Session token is invalidated",
+      "Appropriate message is displayed"
+    ],
+    "grounding_docs": [
+      "legal_constraints.md",
+      "admin_manual.md"
+    ],
+    "estimated_duration": "2 minutes"
+  },
+  {
+    "id": "TC-AUTH-004",
+    "priority": "medium",
+    "type": "functional",
+    "title": "Logout Functionality",
+    "preconditions": [
+      "User is logged in successfully",
+      "User session is active"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Login to the application",
+        "expected": "User is authenticated successfully"
+      },
+      {
+        "step_number": 2,
+        "action": "Locate and click the 'Logout' button/link",
+        "expected": "Logout action is triggered"
+      },
+      {
+        "step_number": 3,
+        "action": "Verify user is logged out",
+        "expected": "User is redirected to login page"
+      },
+      {
+        "step_number": 4,
+        "action": "Attempt to access protected page using browser back button",
+        "expected": "Access is denied and user is redirected to login page"
+      }
+    ],
+    "expected_results": [
+      "User is successfully logged out",
+      "Session token is invalidated",
+      "User cannot access protected resources",
+      "User is redirected to login page"
+    ],
+    "grounding_docs": [
+      "product_specs.md"
+    ],
+    "estimated_duration": "40 seconds"
+  },
+  {
+    "id": "TC-AUTH-005",
+    "priority": "high",
+    "type": "security",
+    "title": "Password Field Masking and Security",
+    "preconditions": [
+      "Login page is accessible",
+      "Browser developer tools can be opened"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Navigate to the login page",
+        "expected": "Login page loads successfully"
+      },
+      {
+        "step_number": 2,
+        "action": "Enter password in password field",
+        "expected": "Characters are masked as dots or asterisks"
+      },
+      {
+        "step_number": 3,
+        "action": "Inspect password field HTML",
+        "expected": "Input type is 'password'"
+      },
+      {
+        "step_number": 4,
+        "action": "Verify password is not visible in browser inspect mode",
+        "expected": "Password value is not exposed in plain text"
+      },
+      {
+        "step_number": 5,
+        "action": "Check if copy-paste is restricted (optional security)",
+        "expected": "Security policy is enforced as per requirements"
+      }
+    ],
+    "expected_results": [
+      "Password is properly masked",
+      "Password cannot be viewed in plain text",
+      "Input type attribute is 'password'",
+      "Security best practices are followed"
+    ],
+    "grounding_docs": [
+      "legal_constraints.md",
+      "product_specs.md"
+    ],
+    "estimated_duration": "50 seconds"
+  },
+  {
+    "id": "TC-AUTH-006",
+    "priority": "medium",
+    "type": "ui",
+    "title": "Login Form Validation and Error Messages",
+    "preconditions": [
+      "Application is accessible",
+      "Login page is loaded"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Navigate to login page",
+        "expected": "Login form is displayed"
+      },
+      {
+        "step_number": 2,
+        "action": "Click login button without entering any credentials",
+        "expected": "Validation error messages appear for required fields"
+      },
+      {
+        "step_number": 3,
+        "action": "Enter invalid email format (e.g., 'notanemail')",
+        "expected": "Email format validation error is displayed"
+      },
+      {
+        "step_number": 4,
+        "action": "Enter valid email but leave password empty",
+        "expected": "Password required error message is shown"
+      },
+      {
+        "step_number": 5,
+        "action": "Verify all error messages are user-friendly and clear",
+        "expected": "Error messages are descriptive and helpful"
+      }
+    ],
+    "expected_results": [
+      "Form validation works correctly",
+      "Appropriate error messages are displayed",
+      "User cannot submit incomplete form",
+      "Email format is validated"
+    ],
+    "grounding_docs": [
+      "ui_ux_guide.md",
+      "product_specs.md"
+    ],
+    "estimated_duration": "1 minute"
+  },
+  {
+    "id": "TC-AUTH-007",
+    "priority": "high",
+    "type": "security",
+    "title": "SQL Injection Attack Prevention in Login",
+    "preconditions": [
+      "Application is accessible",
+      "Login functionality is active"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Navigate to login page",
+        "expected": "Login page loads"
+      },
+      {
+        "step_number": 2,
+        "action": "Enter SQL injection string in email field (e.g., ' OR '1'='1)",
+        "expected": "Input is sanitized"
+      },
+      {
+        "step_number": 3,
+        "action": "Enter SQL injection string in password field",
+        "expected": "Input is sanitized"
+      },
+      {
+        "step_number": 4,
+        "action": "Click login button",
+        "expected": "Login fails with appropriate error message"
+      },
+      {
+        "step_number": 5,
+        "action": "Verify no unauthorized access is granted",
+        "expected": "User is not authenticated, system remains secure"
+      }
+    ],
+    "expected_results": [
+      "SQL injection attempts are blocked",
+      "Input is properly sanitized",
+      "No unauthorized access is granted",
+      "Security vulnerabilities are not exposed"
+    ],
+    "grounding_docs": [
+      "legal_constraints.md",
+      "admin_manual.md"
+    ],
+    "estimated_duration": "1 minute"
+  },
+  {
+    "id": "TC-AUTH-008",
+    "priority": "medium",
+    "type": "functional",
+    "title": "Remember Me Functionality",
+    "preconditions": [
+      "Application supports 'Remember Me' feature",
+      "User has valid credentials"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Navigate to login page",
+        "expected": "Login page with 'Remember Me' checkbox is displayed"
+      },
+      {
+        "step_number": 2,
+        "action": "Enter valid credentials",
+        "expected": "Credentials are entered successfully"
+      },
+      {
+        "step_number": 3,
+        "action": "Check the 'Remember Me' checkbox",
+        "expected": "Checkbox is selected"
+      },
+      {
+        "step_number": 4,
+        "action": "Click login button",
+        "expected": "User is logged in successfully"
+      },
+      {
+        "step_number": 5,
+        "action": "Close browser and reopen application",
+        "expected": "User is still logged in or credentials are pre-filled"
+      }
+    ],
+    "expected_results": [
+      "Remember Me feature works correctly",
+      "User session persists across browser sessions",
+      "Secure cookie/token is stored",
+      "User experience is improved"
+    ],
+    "grounding_docs": [
+      "product_specs.md",
+      "ui_ux_guide.md"
+    ],
+    "estimated_duration": "1.5 minutes"
+  }
+]

@@ -1,0 +1,404 @@
+[
+  {
+    "id": "TC-SEARCH-001",
+    "priority": "high",
+    "type": "functional",
+    "title": "Basic Keyword Search Returns Relevant Results",
+    "preconditions": [
+      "Application is accessible",
+      "Product database contains searchable items",
+      "Search functionality is enabled"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Navigate to home page or any page with search bar",
+        "expected": "Search bar is visible and accessible"
+      },
+      {
+        "step_number": 2,
+        "action": "Enter a valid search keyword (e.g., 'laptop')",
+        "expected": "Keyword is entered in search field"
+      },
+      {
+        "step_number": 3,
+        "action": "Click search button or press Enter",
+        "expected": "Search is executed"
+      },
+      {
+        "step_number": 4,
+        "action": "Verify search results page loads",
+        "expected": "Results page displays with matching products"
+      },
+      {
+        "step_number": 5,
+        "action": "Verify results are relevant to keyword",
+        "expected": "Products contain or relate to 'laptop'"
+      },
+      {
+        "step_number": 6,
+        "action": "Check result count is displayed",
+        "expected": "Text like 'X results found for laptop'"
+      }
+    ],
+    "expected_results": [
+      "Search returns relevant results",
+      "Results are displayed clearly",
+      "Result count is accurate",
+      "Search performance is acceptable (under 2 seconds)"
+    ],
+    "grounding_docs": [
+      "product_specs.md",
+      "ui_ux_guide.md"
+    ],
+    "estimated_duration": "1 minute"
+  },
+  {
+    "id": "TC-SEARCH-002",
+    "priority": "medium",
+    "type": "negative",
+    "title": "Search with No Results Found",
+    "preconditions": [
+      "Search functionality is available"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Navigate to search bar",
+        "expected": "Search bar is visible"
+      },
+      {
+        "step_number": 2,
+        "action": "Enter search term that has no matches (e.g., 'xyzabc123')",
+        "expected": "Term is entered"
+      },
+      {
+        "step_number": 3,
+        "action": "Execute search",
+        "expected": "Search processes query"
+      },
+      {
+        "step_number": 4,
+        "action": "Verify 'No results found' message is displayed",
+        "expected": "User-friendly message appears"
+      },
+      {
+        "step_number": 5,
+        "action": "Check for search suggestions or alternative actions",
+        "expected": "Suggestions like 'Try different keywords' or 'Browse categories' are offered"
+      }
+    ],
+    "expected_results": [
+      "No results state is handled gracefully",
+      "Helpful message guides user",
+      "Alternative actions are suggested",
+      "User experience is not degraded"
+    ],
+    "grounding_docs": [
+      "ui_ux_guide.md",
+      "product_specs.md"
+    ],
+    "estimated_duration": "45 seconds"
+  },
+  {
+    "id": "TC-SEARCH-003",
+    "priority": "high",
+    "type": "functional",
+    "title": "Filter Search Results by Category",
+    "preconditions": [
+      "Search has returned results",
+      "Filter options are available"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Perform a search that returns multiple results",
+        "expected": "Search results are displayed"
+      },
+      {
+        "step_number": 2,
+        "action": "Locate filter options (sidebar or top of results)",
+        "expected": "Filters like Category, Price, Brand are visible"
+      },
+      {
+        "step_number": 3,
+        "action": "Select a category filter (e.g., 'Electronics')",
+        "expected": "Filter is applied"
+      },
+      {
+        "step_number": 4,
+        "action": "Verify results update to show only filtered items",
+        "expected": "Only Electronics category items are shown"
+      },
+      {
+        "step_number": 5,
+        "action": "Check that result count updates",
+        "expected": "Count reflects filtered results"
+      },
+      {
+        "step_number": 6,
+        "action": "Remove filter and verify all results return",
+        "expected": "Original result set is restored"
+      }
+    ],
+    "expected_results": [
+      "Filters work correctly",
+      "Results update dynamically",
+      "Filter selection is clearly indicated",
+      "Filters can be removed easily"
+    ],
+    "grounding_docs": [
+      "product_specs.md",
+      "ui_ux_guide.md"
+    ],
+    "estimated_duration": "1.5 minutes"
+  },
+  {
+    "id": "TC-SEARCH-004",
+    "priority": "high",
+    "type": "functional",
+    "title": "Sort Search Results by Price",
+    "preconditions": [
+      "Search results are displayed",
+      "Sort functionality is available"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Execute a search query",
+        "expected": "Results are displayed"
+      },
+      {
+        "step_number": 2,
+        "action": "Locate sort dropdown (e.g., 'Sort by')",
+        "expected": "Sort options are visible"
+      },
+      {
+        "step_number": 3,
+        "action": "Select 'Price: Low to High'",
+        "expected": "Results are re-sorted"
+      },
+      {
+        "step_number": 4,
+        "action": "Verify products are sorted in ascending price order",
+        "expected": "Cheapest items appear first"
+      },
+      {
+        "step_number": 5,
+        "action": "Select 'Price: High to Low'",
+        "expected": "Results are re-sorted"
+      },
+      {
+        "step_number": 6,
+        "action": "Verify products are sorted in descending price order",
+        "expected": "Most expensive items appear first"
+      }
+    ],
+    "expected_results": [
+      "Sort functionality works correctly",
+      "Results order changes as expected",
+      "Prices are compared accurately",
+      "Sort persists across pages if paginated"
+    ],
+    "grounding_docs": [
+      "product_specs.md"
+    ],
+    "estimated_duration": "1 minute"
+  },
+  {
+    "id": "TC-SEARCH-005",
+    "priority": "medium",
+    "type": "ui",
+    "title": "Search Autocomplete Suggestions",
+    "preconditions": [
+      "Search bar supports autocomplete",
+      "Popular search terms exist in database"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Click in search bar",
+        "expected": "Search bar is focused"
+      },
+      {
+        "step_number": 2,
+        "action": "Type first few characters (e.g., 'lap')",
+        "expected": "Autocomplete dropdown appears"
+      },
+      {
+        "step_number": 3,
+        "action": "Verify suggestions are displayed (e.g., 'laptop', 'laptop bag')",
+        "expected": "Relevant suggestions appear below search bar"
+      },
+      {
+        "step_number": 4,
+        "action": "Click on a suggestion",
+        "expected": "Search is executed with selected term"
+      },
+      {
+        "step_number": 5,
+        "action": "Verify results match the selected suggestion",
+        "expected": "Appropriate results are displayed"
+      }
+    ],
+    "expected_results": [
+      "Autocomplete provides helpful suggestions",
+      "Suggestions update as user types",
+      "Selecting suggestion executes search",
+      "User experience is enhanced"
+    ],
+    "grounding_docs": [
+      "ui_ux_guide.md",
+      "product_specs.md"
+    ],
+    "estimated_duration": "1 minute"
+  },
+  {
+    "id": "TC-SEARCH-006",
+    "priority": "medium",
+    "type": "functional",
+    "title": "Search with Special Characters",
+    "preconditions": [
+      "Search functionality is available"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Navigate to search bar",
+        "expected": "Search bar is ready"
+      },
+      {
+        "step_number": 2,
+        "action": "Enter search term with special characters (e.g., 'phone @#$%')",
+        "expected": "Characters are entered"
+      },
+      {
+        "step_number": 3,
+        "action": "Execute search",
+        "expected": "Search processes without errors"
+      },
+      {
+        "step_number": 4,
+        "action": "Verify search handles special characters gracefully",
+        "expected": "Either results are returned or appropriate message is shown"
+      },
+      {
+        "step_number": 5,
+        "action": "Verify no system errors or SQL injection vulnerabilities",
+        "expected": "System remains stable and secure"
+      }
+    ],
+    "expected_results": [
+      "Special characters are handled safely",
+      "No system errors occur",
+      "Security is maintained",
+      "User receives feedback on their search"
+    ],
+    "grounding_docs": [
+      "legal_constraints.md",
+      "product_specs.md"
+    ],
+    "estimated_duration": "1 minute"
+  },
+  {
+    "id": "TC-SEARCH-007",
+    "priority": "high",
+    "type": "functional",
+    "title": "Pagination of Search Results",
+    "preconditions": [
+      "Search returns more results than can fit on one page",
+      "Pagination is implemented"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Execute search that returns many results (e.g., 'electronics')",
+        "expected": "First page of results is displayed"
+      },
+      {
+        "step_number": 2,
+        "action": "Verify pagination controls are visible (page numbers, next/previous)",
+        "expected": "Pagination UI is present at bottom of results"
+      },
+      {
+        "step_number": 3,
+        "action": "Click 'Next' or page 2",
+        "expected": "Second page of results loads"
+      },
+      {
+        "step_number": 4,
+        "action": "Verify different results are displayed",
+        "expected": "New set of products appears"
+      },
+      {
+        "step_number": 5,
+        "action": "Click 'Previous' or page 1",
+        "expected": "First page is displayed again"
+      },
+      {
+        "step_number": 6,
+        "action": "Verify current page is highlighted in pagination",
+        "expected": "Active page is visually distinct"
+      }
+    ],
+    "expected_results": [
+      "Pagination works correctly",
+      "All results are accessible",
+      "Page navigation is smooth",
+      "Current page is clearly indicated"
+    ],
+    "grounding_docs": [
+      "ui_ux_guide.md",
+      "product_specs.md"
+    ],
+    "estimated_duration": "1.5 minutes"
+  },
+  {
+    "id": "TC-SEARCH-008",
+    "priority": "medium",
+    "type": "functional",
+    "title": "Search History Preservation",
+    "preconditions": [
+      "User is logged in",
+      "Search history feature is enabled"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Perform multiple searches with different keywords",
+        "expected": "Each search completes successfully"
+      },
+      {
+        "step_number": 2,
+        "action": "Click in search bar again",
+        "expected": "Search bar is focused"
+      },
+      {
+        "step_number": 3,
+        "action": "Verify recent searches appear as suggestions",
+        "expected": "Previously searched terms are shown"
+      },
+      {
+        "step_number": 4,
+        "action": "Click on a recent search term",
+        "expected": "Search is re-executed"
+      },
+      {
+        "step_number": 5,
+        "action": "Verify ability to clear search history (if available)",
+        "expected": "Clear option removes history"
+      }
+    ],
+    "expected_results": [
+      "Search history is saved",
+      "Recent searches are easily accessible",
+      "History improves user experience",
+      "Privacy controls are available"
+    ],
+    "grounding_docs": [
+      "product_specs.md",
+      "legal_constraints.md"
+    ],
+    "estimated_duration": "1.5 minutes"
+  }
+]

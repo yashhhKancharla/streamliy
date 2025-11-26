@@ -1,0 +1,391 @@
+[
+  {
+    "id": "TC-CART-001",
+    "priority": "high",
+    "type": "functional",
+    "title": "Add Product to Empty Shopping Cart",
+    "preconditions": [
+      "User is logged in",
+      "Shopping cart is empty",
+      "Product catalog is accessible"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Navigate to product listing page",
+        "expected": "Product catalog displays with available items"
+      },
+      {
+        "step_number": 2,
+        "action": "Select a product to view details",
+        "expected": "Product detail page loads with price, description, and 'Add to Cart' button"
+      },
+      {
+        "step_number": 3,
+        "action": "Click 'Add to Cart' button",
+        "expected": "Confirmation message 'Product added to cart' appears"
+      },
+      {
+        "step_number": 4,
+        "action": "Verify cart icon shows item count (1)",
+        "expected": "Cart badge displays '1' item"
+      },
+      {
+        "step_number": 5,
+        "action": "Navigate to shopping cart page",
+        "expected": "Product appears in cart with correct price and quantity"
+      }
+    ],
+    "expected_results": [
+      "Product is added to cart successfully",
+      "Cart count is updated correctly",
+      "Product details (name, price, quantity) are accurate",
+      "Subtotal is calculated correctly"
+    ],
+    "grounding_docs": [
+      "product_specs.md",
+      "ui_ux_guide.md"
+    ],
+    "estimated_duration": "1 minute"
+  },
+  {
+    "id": "TC-CART-002",
+    "priority": "high",
+    "type": "functional",
+    "title": "Update Product Quantity in Cart",
+    "preconditions": [
+      "User is logged in",
+      "At least one product is in the shopping cart"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Navigate to shopping cart page",
+        "expected": "Cart displays with current items"
+      },
+      {
+        "step_number": 2,
+        "action": "Locate quantity selector for a product",
+        "expected": "Quantity field is editable (dropdown or input field)"
+      },
+      {
+        "step_number": 3,
+        "action": "Increase quantity from 1 to 3",
+        "expected": "Quantity updates to 3"
+      },
+      {
+        "step_number": 4,
+        "action": "Click 'Update Cart' or auto-update triggers",
+        "expected": "Cart refreshes with updated quantity"
+      },
+      {
+        "step_number": 5,
+        "action": "Verify subtotal and total are recalculated",
+        "expected": "Price = Unit Price × New Quantity (3)"
+      }
+    ],
+    "expected_results": [
+      "Quantity updates successfully",
+      "Prices recalculate accurately",
+      "Cart total reflects new quantity",
+      "No errors occur during update"
+    ],
+    "grounding_docs": [
+      "product_specs.md"
+    ],
+    "estimated_duration": "50 seconds"
+  },
+  {
+    "id": "TC-CART-003",
+    "priority": "high",
+    "type": "functional",
+    "title": "Remove Product from Shopping Cart",
+    "preconditions": [
+      "User is logged in",
+      "Shopping cart contains at least one product"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Navigate to shopping cart page",
+        "expected": "Cart displays with items"
+      },
+      {
+        "step_number": 2,
+        "action": "Locate 'Remove' or 'X' button next to a product",
+        "expected": "Remove button is visible and clickable"
+      },
+      {
+        "step_number": 3,
+        "action": "Click the 'Remove' button",
+        "expected": "Confirmation dialog may appear (optional)"
+      },
+      {
+        "step_number": 4,
+        "action": "Confirm removal if prompted",
+        "expected": "Product is removed from cart"
+      },
+      {
+        "step_number": 5,
+        "action": "Verify cart is updated",
+        "expected": "Product no longer appears, cart count decreases, total is recalculated"
+      }
+    ],
+    "expected_results": [
+      "Product is successfully removed",
+      "Cart count updates correctly",
+      "Total price is recalculated",
+      "If cart is empty, 'Your cart is empty' message is displayed"
+    ],
+    "grounding_docs": [
+      "product_specs.md",
+      "ui_ux_guide.md"
+    ],
+    "estimated_duration": "45 seconds"
+  },
+  {
+    "id": "TC-CART-004",
+    "priority": "medium",
+    "type": "functional",
+    "title": "Cart Persistence Across Sessions",
+    "preconditions": [
+      "User is logged in",
+      "User has added items to cart"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Add multiple products to shopping cart",
+        "expected": "Products are added successfully"
+      },
+      {
+        "step_number": 2,
+        "action": "Note the cart contents and count",
+        "expected": "Cart displays X items"
+      },
+      {
+        "step_number": 3,
+        "action": "Logout from the application",
+        "expected": "User is logged out successfully"
+      },
+      {
+        "step_number": 4,
+        "action": "Close browser completely",
+        "expected": "Browser session ends"
+      },
+      {
+        "step_number": 5,
+        "action": "Reopen browser and login again",
+        "expected": "User logs in successfully"
+      },
+      {
+        "step_number": 6,
+        "action": "Check shopping cart",
+        "expected": "Previously added items are still in cart"
+      }
+    ],
+    "expected_results": [
+      "Cart contents persist across sessions",
+      "All products remain in cart",
+      "Quantities are maintained",
+      "User can continue shopping seamlessly"
+    ],
+    "grounding_docs": [
+      "product_specs.md",
+      "admin_manual.md"
+    ],
+    "estimated_duration": "2 minutes"
+  },
+  {
+    "id": "TC-CART-005",
+    "priority": "high",
+    "type": "negative",
+    "title": "Add Out-of-Stock Product to Cart",
+    "preconditions": [
+      "User is logged in",
+      "At least one product is out of stock in the catalog"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Navigate to product listing",
+        "expected": "Products are displayed"
+      },
+      {
+        "step_number": 2,
+        "action": "Select an out-of-stock product",
+        "expected": "Product detail page shows 'Out of Stock' label"
+      },
+      {
+        "step_number": 3,
+        "action": "Verify 'Add to Cart' button is disabled or not present",
+        "expected": "Button is disabled/grayed out or replaced with 'Out of Stock' message"
+      },
+      {
+        "step_number": 4,
+        "action": "Attempt to add product via any alternative method (if possible)",
+        "expected": "System prevents addition"
+      },
+      {
+        "step_number": 5,
+        "action": "Verify error message if user tries to add",
+        "expected": "Error: 'This product is currently out of stock'"
+      }
+    ],
+    "expected_results": [
+      "Out-of-stock products cannot be added to cart",
+      "Clear messaging is displayed",
+      "User experience is not degraded",
+      "System enforces inventory rules"
+    ],
+    "grounding_docs": [
+      "product_specs.md",
+      "legal_constraints.md"
+    ],
+    "estimated_duration": "1 minute"
+  },
+  {
+    "id": "TC-CART-006",
+    "priority": "medium",
+    "type": "ui",
+    "title": "Empty Cart User Experience",
+    "preconditions": [
+      "User is logged in",
+      "Shopping cart is empty"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Navigate to shopping cart page",
+        "expected": "Cart page loads"
+      },
+      {
+        "step_number": 2,
+        "action": "Verify empty cart message is displayed",
+        "expected": "Message: 'Your shopping cart is empty' or similar"
+      },
+      {
+        "step_number": 3,
+        "action": "Check for 'Continue Shopping' button or link",
+        "expected": "Button/link is present and clearly visible"
+      },
+      {
+        "step_number": 4,
+        "action": "Click 'Continue Shopping' button",
+        "expected": "User is redirected to product catalog/home page"
+      },
+      {
+        "step_number": 5,
+        "action": "Verify cart icon shows 0 items",
+        "expected": "Cart badge displays '0' or is empty"
+      }
+    ],
+    "expected_results": [
+      "Empty cart state is user-friendly",
+      "Clear call-to-action is provided",
+      "Navigation is intuitive",
+      "No broken UI elements"
+    ],
+    "grounding_docs": [
+      "ui_ux_guide.md",
+      "product_specs.md"
+    ],
+    "estimated_duration": "40 seconds"
+  },
+  {
+    "id": "TC-CART-007",
+    "priority": "high",
+    "type": "functional",
+    "title": "Apply Discount Code to Cart",
+    "preconditions": [
+      "User is logged in",
+      "Cart contains at least one product",
+      "Valid discount code is available"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Navigate to shopping cart page",
+        "expected": "Cart displays with items and total"
+      },
+      {
+        "step_number": 2,
+        "action": "Locate 'Promo Code' or 'Discount Code' input field",
+        "expected": "Input field is visible"
+      },
+      {
+        "step_number": 3,
+        "action": "Enter valid discount code (e.g., 'SAVE10')",
+        "expected": "Code is entered in the field"
+      },
+      {
+        "step_number": 4,
+        "action": "Click 'Apply' button",
+        "expected": "System validates the code"
+      },
+      {
+        "step_number": 5,
+        "action": "Verify discount is applied to total",
+        "expected": "Discount amount is shown, total is reduced accordingly"
+      }
+    ],
+    "expected_results": [
+      "Valid discount code is applied successfully",
+      "Discount amount is clearly displayed",
+      "Total price reflects the discount",
+      "Confirmation message appears"
+    ],
+    "grounding_docs": [
+      "product_specs.md"
+    ],
+    "estimated_duration": "1 minute"
+  },
+  {
+    "id": "TC-CART-008",
+    "priority": "medium",
+    "type": "negative",
+    "title": "Apply Invalid Discount Code",
+    "preconditions": [
+      "User is logged in",
+      "Cart contains at least one product"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Navigate to shopping cart page",
+        "expected": "Cart page loads"
+      },
+      {
+        "step_number": 2,
+        "action": "Enter invalid/expired discount code",
+        "expected": "Code is entered"
+      },
+      {
+        "step_number": 3,
+        "action": "Click 'Apply' button",
+        "expected": "System validates the code"
+      },
+      {
+        "step_number": 4,
+        "action": "Verify error message is displayed",
+        "expected": "Error: 'Invalid or expired discount code'"
+      },
+      {
+        "step_number": 5,
+        "action": "Verify total remains unchanged",
+        "expected": "No discount is applied, original total is displayed"
+      }
+    ],
+    "expected_results": [
+      "Invalid codes are rejected",
+      "Clear error message is shown",
+      "Cart total remains unchanged",
+      "User can try another code"
+    ],
+    "grounding_docs": [
+      "product_specs.md",
+      "ui_ux_guide.md"
+    ],
+    "estimated_duration": "45 seconds"
+  }
+]

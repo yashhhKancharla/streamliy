@@ -1,0 +1,437 @@
+[
+  {
+    "id": "TC-PAY-001",
+    "priority": "high",
+    "type": "functional",
+    "title": "Complete Payment with Valid Credit Card",
+    "preconditions": [
+      "User is logged in",
+      "Shopping cart contains items",
+      "User has proceeded to checkout",
+      "Valid credit card details are available"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Navigate to payment page from checkout",
+        "expected": "Payment page loads with payment method options"
+      },
+      {
+        "step_number": 2,
+        "action": "Select 'Credit Card' as payment method",
+        "expected": "Credit card form fields appear"
+      },
+      {
+        "step_number": 3,
+        "action": "Enter valid credit card number",
+        "expected": "Card number is accepted and formatted (e.g., XXXX-XXXX-XXXX-XXXX)"
+      },
+      {
+        "step_number": 4,
+        "action": "Enter cardholder name, expiry date, and CVV",
+        "expected": "All fields accept valid input"
+      },
+      {
+        "step_number": 5,
+        "action": "Enter billing address",
+        "expected": "Address fields are filled correctly"
+      },
+      {
+        "step_number": 6,
+        "action": "Click 'Pay Now' or 'Complete Purchase' button",
+        "expected": "Payment processing indicator appears"
+      },
+      {
+        "step_number": 7,
+        "action": "Verify payment success page loads",
+        "expected": "Order confirmation page displays with order number and details"
+      }
+    ],
+    "expected_results": [
+      "Payment is processed successfully",
+      "Order confirmation number is generated",
+      "Confirmation email is sent",
+      "Cart is cleared after successful payment"
+    ],
+    "grounding_docs": [
+      "product_specs.md",
+      "legal_constraints.md"
+    ],
+    "estimated_duration": "2 minutes"
+  },
+  {
+    "id": "TC-PAY-002",
+    "priority": "high",
+    "type": "negative",
+    "title": "Payment Failure with Invalid Card Details",
+    "preconditions": [
+      "User is logged in",
+      "User is on payment page"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Select credit card payment method",
+        "expected": "Payment form is displayed"
+      },
+      {
+        "step_number": 2,
+        "action": "Enter invalid credit card number (e.g., 1234-5678-9012-3456)",
+        "expected": "Field accepts input"
+      },
+      {
+        "step_number": 3,
+        "action": "Fill in other required fields",
+        "expected": "Fields are populated"
+      },
+      {
+        "step_number": 4,
+        "action": "Click 'Pay Now' button",
+        "expected": "System attempts to process payment"
+      },
+      {
+        "step_number": 5,
+        "action": "Verify error message is displayed",
+        "expected": "Error: 'Invalid card number' or 'Payment declined'"
+      },
+      {
+        "step_number": 6,
+        "action": "Verify user remains on payment page",
+        "expected": "User can correct details and retry"
+      }
+    ],
+    "expected_results": [
+      "Invalid payment is rejected",
+      "Clear error message is displayed",
+      "No charge is processed",
+      "User can retry with correct details"
+    ],
+    "grounding_docs": [
+      "product_specs.md",
+      "legal_constraints.md"
+    ],
+    "estimated_duration": "1.5 minutes"
+  },
+  {
+    "id": "TC-PAY-003",
+    "priority": "high",
+    "type": "security",
+    "title": "Credit Card Information Encryption and Security",
+    "preconditions": [
+      "User is on payment page",
+      "SSL/TLS is configured"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Navigate to payment page",
+        "expected": "Payment page loads"
+      },
+      {
+        "step_number": 2,
+        "action": "Verify HTTPS protocol in URL",
+        "expected": "URL starts with 'https://' and shows padlock icon"
+      },
+      {
+        "step_number": 3,
+        "action": "Enter credit card details",
+        "expected": "Fields accept input"
+      },
+      {
+        "step_number": 4,
+        "action": "Open browser developer tools and monitor network traffic",
+        "expected": "Network tab is accessible"
+      },
+      {
+        "step_number": 5,
+        "action": "Submit payment form",
+        "expected": "Data is transmitted"
+      },
+      {
+        "step_number": 6,
+        "action": "Verify card details are encrypted in network requests",
+        "expected": "No plain-text credit card data is visible in requests"
+      }
+    ],
+    "expected_results": [
+      "All payment data is encrypted",
+      "HTTPS is enforced on payment pages",
+      "No sensitive data exposed in logs or network traffic",
+      "PCI-DSS compliance standards are met"
+    ],
+    "grounding_docs": [
+      "legal_constraints.md",
+      "admin_manual.md"
+    ],
+    "estimated_duration": "2 minutes"
+  },
+  {
+    "id": "TC-PAY-004",
+    "priority": "high",
+    "type": "functional",
+    "title": "Process Payment with PayPal",
+    "preconditions": [
+      "User is logged in",
+      "Cart contains items",
+      "PayPal payment method is available"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Navigate to payment page",
+        "expected": "Payment options are displayed"
+      },
+      {
+        "step_number": 2,
+        "action": "Select 'PayPal' as payment method",
+        "expected": "'Continue with PayPal' button appears"
+      },
+      {
+        "step_number": 3,
+        "action": "Click 'Continue with PayPal'",
+        "expected": "Redirected to PayPal login page"
+      },
+      {
+        "step_number": 4,
+        "action": "Login to PayPal account",
+        "expected": "PayPal authenticates user"
+      },
+      {
+        "step_number": 5,
+        "action": "Review order details on PayPal",
+        "expected": "Correct order total and items are shown"
+      },
+      {
+        "step_number": 6,
+        "action": "Confirm payment on PayPal",
+        "expected": "PayPal processes payment"
+      },
+      {
+        "step_number": 7,
+        "action": "Verify redirect back to merchant site",
+        "expected": "Order confirmation page is displayed"
+      }
+    ],
+    "expected_results": [
+      "PayPal payment completes successfully",
+      "User is redirected back to site",
+      "Order confirmation is displayed",
+      "Payment transaction is recorded"
+    ],
+    "grounding_docs": [
+      "product_specs.md"
+    ],
+    "estimated_duration": "2.5 minutes"
+  },
+  {
+    "id": "TC-PAY-005",
+    "priority": "medium",
+    "type": "ui",
+    "title": "Payment Form Validation",
+    "preconditions": [
+      "User is on payment page"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Navigate to payment page",
+        "expected": "Payment form is displayed"
+      },
+      {
+        "step_number": 2,
+        "action": "Click 'Pay Now' without filling any fields",
+        "expected": "Validation errors appear for all required fields"
+      },
+      {
+        "step_number": 3,
+        "action": "Enter invalid card number format",
+        "expected": "Error: 'Invalid card number format'"
+      },
+      {
+        "step_number": 4,
+        "action": "Enter expired date in expiry field",
+        "expected": "Error: 'Card has expired'"
+      },
+      {
+        "step_number": 5,
+        "action": "Enter invalid CVV (e.g., 2 digits instead of 3)",
+        "expected": "Error: 'Invalid CVV'"
+      },
+      {
+        "step_number": 6,
+        "action": "Verify all error messages are clear and helpful",
+        "expected": "User understands what needs to be corrected"
+      }
+    ],
+    "expected_results": [
+      "All form validations work correctly",
+      "Error messages are user-friendly",
+      "Real-time validation provides feedback",
+      "User cannot submit invalid payment information"
+    ],
+    "grounding_docs": [
+      "ui_ux_guide.md",
+      "product_specs.md"
+    ],
+    "estimated_duration": "1.5 minutes"
+  },
+  {
+    "id": "TC-PAY-006",
+    "priority": "high",
+    "type": "functional",
+    "title": "Order Summary Verification Before Payment",
+    "preconditions": [
+      "User has items in cart",
+      "User has proceeded to payment page"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Navigate to payment/checkout page",
+        "expected": "Payment page loads"
+      },
+      {
+        "step_number": 2,
+        "action": "Locate order summary section",
+        "expected": "Order summary is visible on the page"
+      },
+      {
+        "step_number": 3,
+        "action": "Verify all cart items are listed",
+        "expected": "All products with quantities and prices are displayed"
+      },
+      {
+        "step_number": 4,
+        "action": "Verify subtotal, tax, and total amounts",
+        "expected": "All calculations are accurate"
+      },
+      {
+        "step_number": 5,
+        "action": "Check shipping address and method",
+        "expected": "Correct address and shipping option are shown"
+      },
+      {
+        "step_number": 6,
+        "action": "Verify discount codes are applied correctly",
+        "expected": "Discounts are reflected in total"
+      }
+    ],
+    "expected_results": [
+      "Order summary is complete and accurate",
+      "All prices and calculations are correct",
+      "User can review before confirming payment",
+      "Edit options are available if needed"
+    ],
+    "grounding_docs": [
+      "product_specs.md",
+      "ui_ux_guide.md"
+    ],
+    "estimated_duration": "1 minute"
+  },
+  {
+    "id": "TC-PAY-007",
+    "priority": "medium",
+    "type": "functional",
+    "title": "Save Payment Method for Future Use",
+    "preconditions": [
+      "User is logged in",
+      "Feature to save payment methods is enabled"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Navigate to payment page",
+        "expected": "Payment form is displayed"
+      },
+      {
+        "step_number": 2,
+        "action": "Enter valid credit card details",
+        "expected": "Card details are entered"
+      },
+      {
+        "step_number": 3,
+        "action": "Check 'Save this card for future purchases' checkbox",
+        "expected": "Checkbox is selected"
+      },
+      {
+        "step_number": 4,
+        "action": "Complete the payment",
+        "expected": "Payment is processed and order is confirmed"
+      },
+      {
+        "step_number": 5,
+        "action": "Navigate to user account > Payment Methods",
+        "expected": "Saved payment methods page loads"
+      },
+      {
+        "step_number": 6,
+        "action": "Verify saved card appears with masked number",
+        "expected": "Card ending in XXXX is displayed"
+      }
+    ],
+    "expected_results": [
+      "Payment method is saved securely",
+      "Card details are masked (only last 4 digits visible)",
+      "User can use saved card for future purchases",
+      "Saved cards can be managed/deleted by user"
+    ],
+    "grounding_docs": [
+      "product_specs.md",
+      "legal_constraints.md"
+    ],
+    "estimated_duration": "2 minutes"
+  },
+  {
+    "id": "TC-PAY-008",
+    "priority": "high",
+    "type": "negative",
+    "title": "Handle Payment Gateway Timeout",
+    "preconditions": [
+      "User is on payment page",
+      "Network or payment gateway can be simulated to timeout"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Enter valid payment details",
+        "expected": "Form is filled correctly"
+      },
+      {
+        "step_number": 2,
+        "action": "Click 'Pay Now' button",
+        "expected": "Payment processing begins"
+      },
+      {
+        "step_number": 3,
+        "action": "Simulate payment gateway timeout (network delay)",
+        "expected": "Request times out after configured timeout period"
+      },
+      {
+        "step_number": 4,
+        "action": "Verify error message is displayed",
+        "expected": "Error: 'Payment gateway timeout. Please try again.'"
+      },
+      {
+        "step_number": 5,
+        "action": "Verify order is not created or is in pending state",
+        "expected": "No duplicate charges occur"
+      },
+      {
+        "step_number": 6,
+        "action": "Verify user can retry payment",
+        "expected": "Retry option is available"
+      }
+    ],
+    "expected_results": [
+      "Timeout is handled gracefully",
+      "User receives clear error message",
+      "No duplicate charges occur",
+      "User can retry without issues"
+    ],
+    "grounding_docs": [
+      "product_specs.md",
+      "admin_manual.md"
+    ],
+    "estimated_duration": "2 minutes"
+  }
+]

@@ -1,0 +1,256 @@
+[
+  {
+    "id": "TC-AUTH-001",
+    "priority": "high",
+    "type": "functional",
+    "title": "Successful user login with valid credentials",
+    "preconditions": [
+      "User account exists in database",
+      "User is not already logged in",
+      "Browser is open on login page"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Navigate to login page",
+        "data": "https://app.example.com/login",
+        "expected": "Login page loads successfully"
+      },
+      {
+        "step_number": 2,
+        "action": "Enter email address",
+        "data": "testuser@example.com",
+        "expected": "Email field accepts input"
+      },
+      {
+        "step_number": 3,
+        "action": "Enter password",
+        "data": "SecurePass123!",
+        "expected": "Password field masks input"
+      },
+      {
+        "step_number": 4,
+        "action": "Click login button",
+        "data": null,
+        "expected": "Form submits and loading indicator appears"
+      }
+    ],
+    "expected_results": [
+      "User is redirected to dashboard page",
+      "Success message displays: 'Welcome back!'",
+      "Navigation shows user name",
+      "JWT token stored in session"
+    ],
+    "grounding_docs": [
+      "authentication_spec.md",
+      "api_endpoints.md",
+      "ui_ux_guide.md"
+    ],
+    "estimated_duration": "30 seconds"
+  },
+  {
+    "id": "TC-AUTH-002",
+    "priority": "high",
+    "type": "negative",
+    "title": "Login attempt with invalid credentials",
+    "preconditions": [
+      "Browser is open on login page"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Navigate to login page",
+        "data": "https://app.example.com/login",
+        "expected": "Login page loads"
+      },
+      {
+        "step_number": 2,
+        "action": "Enter invalid email",
+        "data": "nonexistent@example.com",
+        "expected": "Email field accepts input"
+      },
+      {
+        "step_number": 3,
+        "action": "Enter incorrect password",
+        "data": "WrongPassword",
+        "expected": "Password field accepts input"
+      },
+      {
+        "step_number": 4,
+        "action": "Click login button",
+        "data": null,
+        "expected": "Form submits"
+      }
+    ],
+    "expected_results": [
+      "User remains on login page",
+      "Error message displays: 'Invalid email or password'",
+      "Email and password fields are cleared",
+      "Failed attempt logged in security logs"
+    ],
+    "grounding_docs": [
+      "authentication_spec.md",
+      "security_spec.md"
+    ],
+    "estimated_duration": "20 seconds"
+  },
+  {
+    "id": "TC-UI-001",
+    "priority": "medium",
+    "type": "ui",
+    "title": "Verify responsive layout on mobile viewport",
+    "preconditions": [
+      "Application is accessible"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Set browser viewport to mobile size (375x667)",
+        "expected": "Viewport resized successfully"
+      },
+      {
+        "step_number": 2,
+        "action": "Navigate to home page",
+        "expected": "Page loads with mobile layout"
+      },
+      {
+        "step_number": 3,
+        "action": "Verify hamburger menu is visible",
+        "expected": "Hamburger icon displayed instead of full navigation"
+      },
+      {
+        "step_number": 4,
+        "action": "Click hamburger menu",
+        "expected": "Navigation menu expands"
+      }
+    ],
+    "expected_results": [
+      "Layout adapts to mobile viewport",
+      "Navigation is accessible via hamburger menu",
+      "Content is readable without horizontal scrolling",
+      "Touch targets are appropriately sized"
+    ],
+    "grounding_docs": [
+      "ui_ux_guide.md",
+      "product_specs.md"
+    ],
+    "estimated_duration": "45 seconds"
+  },
+  {
+    "id": "TC-API-001",
+    "priority": "high",
+    "type": "functional",
+    "title": "Test document ingestion via API",
+    "preconditions": [
+      "API is accessible",
+      "Valid API key is available"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Send POST request to /ingest endpoint",
+        "data": "{\"documents\": [{\"content\": \"test\", \"metadata\": {}}]}",
+        "expected": "Request accepted with 200 status"
+      },
+      {
+        "step_number": 2,
+        "action": "Verify response contains ingested_count",
+        "expected": "Response includes ingestion statistics"
+      },
+      {
+        "step_number": 3,
+        "action": "Query for ingested content",
+        "expected": "Document is retrievable via query endpoint"
+      }
+    ],
+    "expected_results": [
+      "Documents successfully ingested",
+      "ChromaDB collection updated",
+      "Ingested content is searchable"
+    ],
+    "grounding_docs": [
+      "api_endpoints.md",
+      "product_specs.md"
+    ],
+    "estimated_duration": "25 seconds"
+  },
+  {
+    "id": "TC-SEC-001",
+    "priority": "high",
+    "type": "security",
+    "title": "Verify API authentication is required",
+    "preconditions": [
+      "API is accessible"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Send request to /generate-tests without API key",
+        "expected": "Request sent"
+      },
+      {
+        "step_number": 2,
+        "action": "Verify response status is 401 Unauthorized",
+        "expected": "Authentication error returned"
+      },
+      {
+        "step_number": 3,
+        "action": "Send request with invalid API key",
+        "expected": "Request sent with invalid key"
+      },
+      {
+        "step_number": 4,
+        "action": "Verify response status is 401 Unauthorized",
+        "expected": "Authentication error returned"
+      }
+    ],
+    "expected_results": [
+      "All endpoints require valid authentication",
+      "Appropriate error messages returned",
+      "Failed attempts are logged"
+    ],
+    "grounding_docs": [
+      "api_endpoints.md",
+      "legal_constraints.md"
+    ],
+    "estimated_duration": "30 seconds"
+  },
+  {
+    "id": "TC-RAG-001",
+    "priority": "high",
+    "type": "functional",
+    "title": "Test RAG context retrieval accuracy",
+    "preconditions": [
+      "Documents are ingested into ChromaDB",
+      "Vector embeddings are generated"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Query for authentication-related content",
+        "data": "How does user authentication work?",
+        "expected": "Query processed"
+      },
+      {
+        "step_number": 2,
+        "action": "Verify returned results contain authentication documentation",
+        "expected": "Relevant chunks retrieved"
+      },
+      {
+        "step_number": 3,
+        "action": "Check similarity scores are above 0.7",
+        "expected": "High relevance scores"
+      }
+    ],
+    "expected_results": [
+      "Relevant documents retrieved",
+      "Similarity scores indicate good matches",
+      "Retrieved content is semantically related to query"
+    ],
+    "grounding_docs": [
+      "product_specs.md",
+      "api_endpoints.md"
+    ],
+    "estimated_duration": "20 seconds"
+  }
+]

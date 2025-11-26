@@ -1,0 +1,383 @@
+{
+  "sample_payloads": {
+    "grounded_in": "Assignment - 1.pdf",
+    "description": "Sample API request and response payloads for testing",
+    
+    "ingest_request": {
+      "documents": [
+        {
+          "content": "The authentication system uses JWT tokens with 24-hour expiration. Users must provide valid email and password credentials.",
+          "metadata": {
+            "source": "authentication_spec.md",
+            "doc_type": "specification",
+            "version": "2.1.0",
+            "timestamp": "2025-11-25T10:00:00Z"
+          }
+        },
+        {
+          "content": "User roles include: Admin (full access), Editor (read/write), Viewer (read-only). Permissions are checked on every API request.",
+          "metadata": {
+            "source": "authorization_spec.md",
+            "doc_type": "specification",
+            "version": "2.1.0",
+            "timestamp": "2025-11-25T10:05:00Z"
+          }
+        }
+      ],
+      "chunk_size": 800,
+      "chunk_overlap": 150
+    },
+
+    "ingest_response": {
+      "status": "success",
+      "ingested_count": 2,
+      "chunks_created": 8,
+      "collection": "assignment_index",
+      "processing_time_ms": 1547,
+      "chunk_details": [
+        {
+          "doc_index": 0,
+          "chunks": 4,
+          "tokens": 3200
+        },
+        {
+          "doc_index": 1,
+          "chunks": 4,
+          "tokens": 3100
+        }
+      ]
+    },
+
+    "query_request": {
+      "query": "How does user authentication work?",
+      "k": 6,
+      "filters": {
+        "source": "authentication_spec.md",
+        "doc_type": "specification"
+      },
+      "include_metadata": true
+    },
+
+    "query_response": {
+      "query": "How does user authentication work?",
+      "results": [
+        {
+          "content": "The authentication system uses JWT tokens with 24-hour expiration. Users must provide valid email and password credentials.",
+          "metadata": {
+            "source": "authentication_spec.md",
+            "chunk_id": "chunk_001",
+            "doc_type": "specification"
+          },
+          "similarity_score": 0.94
+        },
+        {
+          "content": "Login endpoint accepts POST requests with email and password in JSON body. Returns JWT token on success.",
+          "metadata": {
+            "source": "api_endpoints.md",
+            "chunk_id": "chunk_045",
+            "doc_type": "api_documentation"
+          },
+          "similarity_score": 0.89
+        },
+        {
+          "content": "Failed login attempts are logged. After 5 failed attempts, account is locked for 15 minutes.",
+          "metadata": {
+            "source": "security_spec.md",
+            "chunk_id": "chunk_023",
+            "doc_type": "specification"
+          },
+          "similarity_score": 0.85
+        }
+      ],
+      "retrieval_time_ms": 234,
+      "total_results": 3
+    },
+
+    "generate_tests_request": {
+      "feature": "User Authentication System",
+      "requirements": "Users should be able to register, login, logout, and reset passwords. System must enforce password complexity and rate limiting.",
+      "context": {
+        "application_type": "web",
+        "testing_framework": "selenium",
+        "browser": "chrome"
+      },
+      "output_formats": ["json", "markdown", "selenium"],
+      "priority_levels": ["high", "medium", "low"],
+      "test_types": ["functional", "security", "ui", "negative"]
+    },
+
+    "generate_tests_response": {
+      "status": "success",
+      "feature": "User Authentication System",
+      "test_cases": [
+        {
+          "id": "TC-AUTH-001",
+          "priority": "high",
+          "type": "functional",
+          "title": "Successful user login with valid credentials",
+          "preconditions": [
+            "User account exists in database",
+            "User is not already logged in",
+            "Browser is open on login page"
+          ],
+          "steps": [
+            {
+              "step_number": 1,
+              "action": "Navigate to login page",
+              "data": "https://app.example.com/login",
+              "expected": "Login page loads successfully"
+            },
+            {
+              "step_number": 2,
+              "action": "Enter email address",
+              "data": "testuser@example.com",
+              "expected": "Email field accepts input"
+            },
+            {
+              "step_number": 3,
+              "action": "Enter password",
+              "data": "SecurePass123!",
+              "expected": "Password field masks input"
+            },
+            {
+              "step_number": 4,
+              "action": "Click login button",
+              "data": null,
+              "expected": "Form submits and loading indicator appears"
+            }
+          ],
+          "expected_results": [
+            "User is redirected to dashboard page",
+            "Success message displays: 'Welcome back!'",
+            "Navigation shows user name",
+            "JWT token stored in session"
+          ],
+          "grounding_docs": [
+            "authentication_spec.md",
+            "api_endpoints.md",
+            "ui_ux_guide.md"
+          ],
+          "estimated_duration": "30 seconds"
+        },
+        {
+          "id": "TC-AUTH-002",
+          "priority": "high",
+          "type": "negative",
+          "title": "Login attempt with invalid credentials",
+          "preconditions": [
+            "User account does not exist or password is incorrect",
+            "Browser is open on login page"
+          ],
+          "steps": [
+            {
+              "step_number": 1,
+              "action": "Navigate to login page",
+              "data": "https://app.example.com/login",
+              "expected": "Login page loads"
+            },
+            {
+              "step_number": 2,
+              "action": "Enter invalid email",
+              "data": "nonexistent@example.com",
+              "expected": "Email field accepts input"
+            },
+            {
+              "step_number": 3,
+              "action": "Enter incorrect password",
+              "data": "WrongPassword",
+              "expected": "Password field accepts input"
+            },
+            {
+              "step_number": 4,
+              "action": "Click login button",
+              "data": null,
+              "expected": "Form submits"
+            }
+          ],
+          "expected_results": [
+            "User remains on login page",
+            "Error message displays: 'Invalid email or password'",
+            "Email and password fields are cleared",
+            "Failed attempt logged in security logs"
+          ],
+          "grounding_docs": [
+            "authentication_spec.md",
+            "security_spec.md"
+          ],
+          "estimated_duration": "20 seconds"
+        }
+      ],
+      "output_files": {
+        "json": "testcases_auth.json",
+        "markdown": "testcases_auth.md",
+        "selenium": [
+          "test_auth_valid_login.py",
+          "test_auth_invalid_login.py"
+        ]
+      },
+      "generation_time_ms": 4523,
+      "grounding_metadata": {
+        "documents_referenced": 5,
+        "chunks_retrieved": 18,
+        "confidence_score": 0.91
+      }
+    },
+
+    "run_test_request": {
+      "test_id": "TC-AUTH-001",
+      "configuration": {
+        "base_url": "https://staging.example.com",
+        "browser": "chrome",
+        "headless": false,
+        "window_size": "1920x1080",
+        "timeout": 30,
+        "screenshot_on_failure": true,
+        "screenshot_on_success": true,
+        "video_recording": false
+      },
+      "test_data": {
+        "email": "testuser@example.com",
+        "password": "SecurePass123!"
+      },
+      "environment": "staging"
+    },
+
+    "run_test_response": {
+      "test_id": "TC-AUTH-001",
+      "status": "passed",
+      "execution_time_ms": 8234,
+      "start_time": "2025-11-25T10:30:00Z",
+      "end_time": "2025-11-25T10:30:08Z",
+      "steps_executed": 4,
+      "steps_passed": 4,
+      "steps_failed": 0,
+      "steps_skipped": 0,
+      "step_results": [
+        {
+          "step_number": 1,
+          "status": "passed",
+          "duration_ms": 1200,
+          "screenshot": "step_1_navigate.png",
+          "log": "Successfully navigated to login page"
+        },
+        {
+          "step_number": 2,
+          "status": "passed",
+          "duration_ms": 450,
+          "screenshot": "step_2_email.png",
+          "log": "Email entered successfully"
+        },
+        {
+          "step_number": 3,
+          "status": "passed",
+          "duration_ms": 420,
+          "screenshot": "step_3_password.png",
+          "log": "Password entered successfully"
+        },
+        {
+          "step_number": 4,
+          "status": "passed",
+          "duration_ms": 6164,
+          "screenshot": "step_4_submit.png",
+          "log": "Login successful, redirected to dashboard"
+        }
+      ],
+      "screenshots": [
+        "step_1_navigate.png",
+        "step_2_email.png",
+        "step_3_password.png",
+        "step_4_submit.png"
+      ],
+      "error_message": null,
+      "error_stack": null,
+      "browser_logs": [
+        {
+          "timestamp": "2025-11-25T10:30:01Z",
+          "level": "INFO",
+          "message": "Navigation committed"
+        },
+        {
+          "timestamp": "2025-11-25T10:30:07Z",
+          "level": "INFO",
+          "message": "Authentication successful"
+        }
+      ],
+      "performance_metrics": {
+        "page_load_time_ms": 850,
+        "first_contentful_paint_ms": 450,
+        "dom_content_loaded_ms": 720,
+        "time_to_interactive_ms": 1100
+      }
+    },
+
+    "error_response_examples": {
+      "invalid_request": {
+        "error": {
+          "code": "INVALID_REQUEST",
+          "message": "Missing required field: query",
+          "details": {
+            "field": "query",
+            "expected_type": "string",
+            "received_type": "undefined"
+          }
+        },
+        "status": "error",
+        "timestamp": "2025-11-25T10:40:00Z",
+        "request_id": "req_abc123xyz"
+      },
+      "authentication_failed": {
+        "error": {
+          "code": "AUTHENTICATION_FAILED",
+          "message": "Invalid or missing API key",
+          "details": {
+            "header": "X-API-Key",
+            "documentation": "https://docs.example.com/authentication"
+          }
+        },
+        "status": "error",
+        "timestamp": "2025-11-25T10:41:00Z",
+        "request_id": "req_def456uvw"
+      },
+      "resource_not_found": {
+        "error": {
+          "code": "RESOURCE_NOT_FOUND",
+          "message": "Test case with ID 'TC-999' not found",
+          "details": {
+            "resource_type": "test_case",
+            "resource_id": "TC-999"
+          }
+        },
+        "status": "error",
+        "timestamp": "2025-11-25T10:42:00Z",
+        "request_id": "req_ghi789rst"
+      },
+      "internal_error": {
+        "error": {
+          "code": "INTERNAL_ERROR",
+          "message": "An unexpected error occurred during test generation",
+          "details": {
+            "error_id": "err_internal_12345",
+            "support_email": "support@example.com"
+          }
+        },
+        "status": "error",
+        "timestamp": "2025-11-25T10:43:00Z",
+        "request_id": "req_jkl012opq"
+      },
+      "rate_limit_exceeded": {
+        "error": {
+          "code": "RATE_LIMIT_EXCEEDED",
+          "message": "Too many requests. Please try again later.",
+          "details": {
+            "limit": 100,
+            "window": "60 seconds",
+            "retry_after": 45
+          }
+        },
+        "status": "error",
+        "timestamp": "2025-11-25T10:44:00Z",
+        "request_id": "req_mno345pqr"
+      }
+    }
+  }
+}
