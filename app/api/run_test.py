@@ -85,12 +85,35 @@ def _find_test_file(test_id: str) -> str:
     if not test_dir.exists():
         return None
     
-    # Search for file containing test_id
+    # Normalize test_id for matching
     test_id_normalized = test_id.replace('-', '_').lower()
     
+    # First, try exact filename match
     for test_file in test_dir.glob("test_*.py"):
-        if test_id_normalized in test_file.name:
+        file_name = test_file.name.lower()
+        
+        # Check if test_id matches filename exactly (without test_ prefix and .py suffix)
+        file_base = file_name.replace('test_', '').replace('.py', '')
+        if test_id_normalized == file_base or test_id_normalized in file_base:
             return str(test_file)
+    
+    # Second, try partial match with the test_id
+    for test_file in test_dir.glob("test_*.py"):
+        file_name = test_file.name.lower()
+        # Check for partial match - if any significant part of test_id matches
+        test_id_parts = test_id_normalized.split('_')
+        for part in test_id_parts:
+            if len(part) > 2 and part in file_name:
+                return str(test_file)
+    
+    # Third, try to match just the TC number pattern (e.g., tc_001)
+    import re
+    tc_match = re.search(r'tc[_-]?(\d+)', test_id_normalized)
+    if tc_match:
+        tc_pattern = f"tc_{tc_match.group(1)}"
+        for test_file in test_dir.glob("test_*.py"):
+            if tc_pattern in test_file.name.lower():
+                return str(test_file)
     
     return None
 

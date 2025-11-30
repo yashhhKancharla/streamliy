@@ -1,31 +1,260 @@
 [
   {
-    "id": "TC-001",
+    "id": "TC-FUNC-001",
     "priority": "high",
     "type": "functional",
-    "title": "Basic functionality test for User Login",
+    "title": "Successful login with valid credentials",
     "preconditions": [
-      "System is accessible",
-      "Test data is prepared"
+      "User account exists",
+      "User is on login page"
     ],
     "steps": [
       {
         "step_number": 1,
-        "action": "Access the feature",
-        "expected": "Feature loads successfully"
+        "action": "Enter valid email address",
+        "expected": "Email field accepts input"
       },
       {
         "step_number": 2,
-        "action": "Verify basic functionality",
-        "expected": "Feature works as expected"
+        "action": "Enter valid password (8+ characters)",
+        "expected": "Password field accepts input"
+      },
+      {
+        "step_number": 3,
+        "action": "Click login button",
+        "expected": "System processes credentials"
       }
     ],
-    "expected_results": [
-      "Feature functions correctly"
-    ],
+    "expected_results": "User is redirected to dashboard",
     "grounding_docs": [
-      "product_specs.md"
+      "test_specs.md"
     ],
-    "estimated_duration": "30 seconds"
+    "estimated_duration": 3
+  },
+  {
+    "id": "TC-FUNC-002",
+    "priority": "high",
+    "type": "functional",
+    "title": "Login attempt with invalid email format",
+    "preconditions": [
+      "User is on login page"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Enter invalid email (e.g., 'user@')",
+        "expected": "Email field accepts input"
+      },
+      {
+        "step_number": 2,
+        "action": "Enter valid password",
+        "expected": "Password field accepts input"
+      },
+      {
+        "step_number": 3,
+        "action": "Click login button",
+        "expected": "System validates inputs"
+      }
+    ],
+    "expected_results": "Error message displayed about invalid email format",
+    "grounding_docs": [
+      "test_specs.md"
+    ],
+    "estimated_duration": 2
+  },
+  {
+    "id": "TC-FUNC-003",
+    "priority": "high",
+    "type": "functional",
+    "title": "Login attempt with invalid password",
+    "preconditions": [
+      "Valid user account exists",
+      "User is on login page"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Enter valid email",
+        "expected": "Email field accepts input"
+      },
+      {
+        "step_number": 2,
+        "action": "Enter incorrect password (8+ characters)",
+        "expected": "Password field accepts input"
+      },
+      {
+        "step_number": 3,
+        "action": "Click login button",
+        "expected": "System verifies credentials"
+      }
+    ],
+    "expected_results": "Error message displayed about invalid credentials",
+    "grounding_docs": [
+      "test_specs.md"
+    ],
+    "estimated_duration": 2
+  },
+  {
+    "id": "TC-FUNC-004",
+    "priority": "medium",
+    "type": "functional",
+    "title": "Login attempt with password <8 characters",
+    "preconditions": [
+      "User is on login page"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Enter valid email",
+        "expected": "Email field accepts input"
+      },
+      {
+        "step_number": 2,
+        "action": "Enter 7-character password",
+        "expected": "Password field accepts input"
+      },
+      {
+        "step_number": 3,
+        "action": "Click login button",
+        "expected": "System validates password length"
+      }
+    ],
+    "expected_results": "Error message displayed about password requirements",
+    "grounding_docs": [
+      "test_specs.md"
+    ],
+    "estimated_duration": 2
+  },
+  {
+    "id": "TC-FUNC-005",
+    "priority": "high",
+    "type": "functional",
+    "title": "Account lockout after 5 failed attempts",
+    "preconditions": [
+      "Valid user account exists",
+      "User is on login page"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Repeat invalid login attempts 5 times",
+        "expected": "System tracks failed attempts"
+      },
+      {
+        "step_number": 2,
+        "action": "Attempt valid login on 6th try",
+        "expected": "System checks account status"
+      }
+    ],
+    "expected_results": "Account is locked and appropriate error message is displayed",
+    "grounding_docs": [
+      "test_specs.md"
+    ],
+    "estimated_duration": 5
+  },
+  {
+    "id": "TC-SEC-001",
+    "priority": "high",
+    "type": "security",
+    "title": "SQL injection attempt in login fields",
+    "preconditions": [
+      "User is on login page"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Enter SQL injection payload in email field",
+        "expected": "Input sanitization occurs"
+      },
+      {
+        "step_number": 2,
+        "action": "Enter random password",
+        "expected": "Password field accepts input"
+      },
+      {
+        "step_number": 3,
+        "action": "Click login button",
+        "expected": "System handles malicious input"
+      }
+    ],
+    "expected_results": "Login attempt rejected with generic error message",
+    "grounding_docs": [
+      "test_specs.md"
+    ],
+    "estimated_duration": 3
+  },
+  {
+    "id": "TC-SEC-002",
+    "priority": "medium",
+    "type": "security",
+    "title": "Password field masking verification",
+    "preconditions": [
+      "User is on login page"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Enter text in password field",
+        "expected": "Input is masked (e.g., asterisks/dots)"
+      }
+    ],
+    "expected_results": "Password characters are not visible in plain text",
+    "grounding_docs": [
+      "test_specs.md"
+    ],
+    "estimated_duration": 1
+  },
+  {
+    "id": "TC-SEC-003",
+    "priority": "high",
+    "type": "security",
+    "title": "Session management after successful login",
+    "preconditions": [
+      "User successfully logged in"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Check session cookies",
+        "expected": "Secure/HttpOnly flags set"
+      },
+      {
+        "step_number": 2,
+        "action": "Check authentication tokens",
+        "expected": "Proper encryption in place"
+      }
+    ],
+    "expected_results": "Secure session establishment with proper cookie settings",
+    "grounding_docs": [
+      "test_specs.md"
+    ],
+    "estimated_duration": 4
+  },
+  {
+    "id": "TC-SEC-004",
+    "priority": "medium",
+    "type": "security",
+    "title": "Brute force attack mitigation",
+    "preconditions": [
+      "User account exists",
+      "Login page accessible"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Perform 5 rapid failed login attempts",
+        "expected": "Account lockout mechanism activates"
+      },
+      {
+        "step_number": 2,
+        "action": "Attempt login with different passwords after lockout",
+        "expected": "System maintains lockout state"
+      }
+    ],
+    "expected_results": "Account remains locked despite varied password attempts",
+    "grounding_docs": [
+      "test_specs.md"
+    ],
+    "estimated_duration": 5
   }
 ]

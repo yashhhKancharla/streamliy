@@ -1,0 +1,192 @@
+[
+  {
+    "id": "TC-FUNC-001",
+    "priority": "high",
+    "type": "functional",
+    "title": "Successful login with valid credentials",
+    "preconditions": [
+      "User has valid account credentials",
+      "User is on login page"
+    ],
+    "steps": [
+      "1. Enter valid email address: testuser@example.com",
+      "2. Enter valid password: Passw0rd123",
+      "3. Click login button"
+    ],
+    "expected_results": [
+      "User is redirected to dashboard"
+    ],
+    "grounding_docs": [
+      "Document 1",
+      "Document 2",
+      "Document 3"
+    ],
+    "estimated_duration": 2
+  },
+  {
+    "id": "TC-FUNC-002",
+    "priority": "high",
+    "type": "functional",
+    "title": "Validate password complexity requirements",
+    "preconditions": [
+      "User is on login page"
+    ],
+    "steps": [
+      "1. Enter valid email address: testuser@example.com",
+      "2. Enter invalid password: pass123 (doesn't meet complexity)",
+      "3. Click login button"
+    ],
+    "expected_results": [
+      "Error message displayed: 'Password must be at least 8 characters with mixed case and numbers'"
+    ],
+    "grounding_docs": [
+      "Document 1",
+      "Document 4",
+      "Document 5"
+    ],
+    "estimated_duration": 2
+  },
+  {
+    "id": "TC-SEC-003",
+    "priority": "high",
+    "type": "security",
+    "title": "Account lockout after 5 failed attempts",
+    "preconditions": [
+      "User has valid account credentials",
+      "User is on login page"
+    ],
+    "steps": [
+      "1. Enter valid email address: testuser@example.com",
+      "2. Enter invalid password: WrongPass1",
+      "3. Click login button (repeat 5 times)"
+    ],
+    "expected_results": [
+      "Error message displayed after 5th attempt: 'Account locked due to multiple failed attempts'",
+      "Subsequent login attempts blocked"
+    ],
+    "grounding_docs": [
+      "Document 2",
+      "Document 3",
+      "Document 6"
+    ],
+    "estimated_duration": 3
+  },
+  {
+    "id": "TC-SEC-004",
+    "priority": "medium",
+    "type": "security",
+    "title": "Session timeout after 30 minutes inactivity",
+    "preconditions": [
+      "User is logged in to system"
+    ],
+    "steps": [
+      "1. Leave system idle for 30 minutes",
+      "2. Attempt to refresh dashboard page"
+    ],
+    "expected_results": [
+      "User is redirected to login page",
+      "Session timeout message displayed"
+    ],
+    "grounding_docs": [
+      "Document 4",
+      "Document 5",
+      "Document 6"
+    ],
+    "estimated_duration": 5
+  },
+  {
+    "id": "TC-NEG-005",
+    "priority": "high",
+    "type": "negative",
+    "title": "Login attempt with invalid email format",
+    "preconditions": [
+      "User is on login page"
+    ],
+    "steps": [
+      "1. Enter invalid email: invalid-email",
+      "2. Enter valid password: Passw0rd123",
+      "3. Click login button"
+    ],
+    "expected_results": [
+      "Error message displayed: 'Please enter a valid email address'"
+    ],
+    "grounding_docs": [
+      "Document 1",
+      "Document 3",
+      "Document 5"
+    ],
+    "estimated_duration": 2
+  },
+  {
+    "id": "TC-NEG-006",
+    "priority": "medium",
+    "type": "negative",
+    "title": "Login attempt with incorrect password",
+    "preconditions": [
+      "User has valid account credentials",
+      "User is on login page"
+    ],
+    "steps": [
+      "1. Enter valid email address: testuser@example.com",
+      "2. Enter incorrect password: WrongPass1",
+      "3. Click login button"
+    ],
+    "expected_results": [
+      "Error message displayed: 'Invalid email or password'"
+    ],
+    "grounding_docs": [
+      "Document 2",
+      "Document 4",
+      "Document 6"
+    ],
+    "estimated_duration": 2
+  },
+  {
+    "id": "TC-NEG-007",
+    "priority": "high",
+    "type": "negative",
+    "title": "Login attempt with empty credentials",
+    "preconditions": [
+      "User is on login page"
+    ],
+    "steps": [
+      "1. Leave email field empty",
+      "2. Leave password field empty",
+      "3. Click login button"
+    ],
+    "expected_results": [
+      "Error message displayed under email field: 'Email is required'",
+      "Error message displayed under password field: 'Password is required'"
+    ],
+    "grounding_docs": [
+      "Document 1",
+      "Document 3",
+      "Document 5"
+    ],
+    "estimated_duration": 2
+  },
+  {
+    "id": "TC-SEC-008",
+    "priority": "medium",
+    "type": "security",
+    "title": "Login attempt with locked account",
+    "preconditions": [
+      "User account is locked",
+      "User is on login page"
+    ],
+    "steps": [
+      "1. Enter locked account email: lockeduser@example.com",
+      "2. Enter any password: Test1234",
+      "3. Click login button"
+    ],
+    "expected_results": [
+      "Error message displayed: 'Account is locked. Please contact support'"
+    ],
+    "grounding_docs": [
+      "Document 2",
+      "Document 4",
+      "Document 6"
+    ],
+    "estimated_duration": 2
+  }
+]

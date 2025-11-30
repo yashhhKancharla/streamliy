@@ -1,0 +1,185 @@
+[
+  {
+    "id": "TC-AUTH-001",
+    "priority": "high",
+    "type": "functional",
+    "title": "Successful login with valid credentials",
+    "preconditions": [
+      "User has registered account",
+      "User is on login page"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Enter valid email address: user@example.com",
+        "expected": "Email field accepts input"
+      },
+      {
+        "step_number": 2,
+        "action": "Enter valid password: Pass1234",
+        "expected": "Password field accepts input"
+      },
+      {
+        "step_number": 3,
+        "action": "Click login button",
+        "expected": "User is redirected to dashboard"
+      }
+    ],
+    "expected_results": "Successful login and dashboard access",
+    "grounding_docs": [
+      "Document 1",
+      "Document 2"
+    ],
+    "estimated_duration": 2
+  },
+  {
+    "id": "TC-AUTH-002",
+    "priority": "high",
+    "type": "functional",
+    "title": "Login attempt with invalid email format",
+    "preconditions": [
+      "User is on login page"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Enter invalid email: invalid-email",
+        "expected": "Email field accepts input"
+      },
+      {
+        "step_number": 2,
+        "action": "Enter valid password: Pass1234",
+        "expected": "Password field accepts input"
+      },
+      {
+        "step_number": 3,
+        "action": "Click login button",
+        "expected": "Error message displayed about invalid email format"
+      }
+    ],
+    "expected_results": "System rejects invalid email format with error message",
+    "grounding_docs": [
+      "Document 2"
+    ],
+    "estimated_duration": 1
+  },
+  {
+    "id": "TC-AUTH-003",
+    "priority": "high",
+    "type": "security",
+    "title": "Login attempt with incorrect password",
+    "preconditions": [
+      "User has registered account",
+      "User is on login page"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Enter valid email address: user@example.com",
+        "expected": "Email field accepts input"
+      },
+      {
+        "step_number": 2,
+        "action": "Enter invalid password: Wrong123",
+        "expected": "Password field accepts input"
+      },
+      {
+        "step_number": 3,
+        "action": "Click login button",
+        "expected": "Error message displayed about invalid credentials"
+      }
+    ],
+    "expected_results": "System rejects invalid credentials with error message",
+    "grounding_docs": [
+      "Document 1",
+      "Document 2"
+    ],
+    "estimated_duration": 1
+  },
+  {
+    "id": "TC-AUTH-004",
+    "priority": "medium",
+    "type": "functional",
+    "title": "Password length validation - 7 characters",
+    "preconditions": [
+      "User is on login page"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Enter valid email address: user@example.com",
+        "expected": "Email field accepts input"
+      },
+      {
+        "step_number": 2,
+        "action": "Enter short password: Short12",
+        "expected": "Password field accepts input"
+      },
+      {
+        "step_number": 3,
+        "action": "Click login button",
+        "expected": "Error message displayed about password requirements"
+      }
+    ],
+    "expected_results": "System rejects password shorter than 8 characters",
+    "grounding_docs": [
+      "Document 1",
+      "Document 2"
+    ],
+    "estimated_duration": 1
+  },
+  {
+    "id": "TC-AUTH-005",
+    "priority": "medium",
+    "type": "security",
+    "title": "Account lockout after 5 consecutive failed attempts",
+    "preconditions": [
+      "User has registered account",
+      "User is on login page"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Repeat 5 times: Enter valid email with invalid password and submit",
+        "expected": "Error message after each attempt"
+      },
+      {
+        "step_number": 2,
+        "action": "Attempt login with correct credentials",
+        "expected": "Account locked error message displayed"
+      }
+    ],
+    "expected_results": "Account is locked after 5 failed attempts and prevents further login",
+    "grounding_docs": [
+      "Document 1"
+    ],
+    "estimated_duration": 3
+  },
+  {
+    "id": "TC-AUTH-006",
+    "priority": "medium",
+    "type": "security",
+    "title": "Session timeout after 30 minutes of inactivity",
+    "preconditions": [
+      "User is successfully logged in",
+      "User is on dashboard page"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Wait 30 minutes without activity",
+        "expected": "Session remains active during waiting period"
+      },
+      {
+        "step_number": 2,
+        "action": "Attempt to refresh dashboard page",
+        "expected": "User is redirected to login page"
+      }
+    ],
+    "expected_results": "Session automatically expires after 30 minutes of inactivity",
+    "grounding_docs": [
+      "Document 1"
+    ],
+    "estimated_duration": 3
+  }
+]

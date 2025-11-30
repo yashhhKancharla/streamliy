@@ -117,7 +117,7 @@ Each test case must include:
 - type: One of {test_types}
 - title: Clear, descriptive title
 - preconditions: List of prerequisites
-- steps: Detailed test steps with actions and expected outcomes
+- steps: Array of objects with fields: step_number, action, expected
 - expected_results: Final expected results
 - grounding_docs: Source documents referenced
 - estimated_duration: Execution time estimate
@@ -137,6 +137,7 @@ Return ONLY a valid JSON array of test case objects, no additional text."""
             
             # Parse JSON response
             try:
+                logger.info("llm_raw_response", response_preview=response[:500])
                 # Extract JSON from response
                 json_start = response.find('[')
                 json_end = response.rfind(']') + 1
@@ -145,7 +146,32 @@ Return ONLY a valid JSON array of test case objects, no additional text."""
                     test_cases = json.loads(json_str)
                 else:
                     # Fallback: try parsing entire response
-                    test_cases = json.loads(response)
+                    parsed = json.loads(response)
+                    if isinstance(parsed, dict):
+                        test_cases = [parsed]
+                    elif isinstance(parsed, list):
+                        test_cases = parsed
+                    else:
+                        logger.warning("unexpected_json_type", type=str(type(parsed)))
+                        test_cases = self._generate_fallback_test_cases(feature, requirements)
+                
+                # Validate test_cases is a list of dicts
+                if not isinstance(test_cases, list):
+                     test_cases = [test_cases] if isinstance(test_cases, dict) else []
+                
+                valid_cases = []
+                for tc in test_cases:
+                    if isinstance(tc, dict):
+                        valid_cases.append(tc)
+                    else:
+                        logger.warning("invalid_test_case_format", test_case=str(tc))
+                
+                if not valid_cases:
+                    logger.warning("no_valid_test_cases_found", original_count=len(test_cases))
+                    test_cases = self._generate_fallback_test_cases(feature, requirements)
+                else:
+                    test_cases = valid_cases
+
             except json.JSONDecodeError as e:
                 logger.error("failed_to_parse_test_cases", error=str(e), response_preview=response[:200])
                 test_cases = self._generate_fallback_test_cases(feature, requirements)
@@ -249,29 +275,60 @@ Total: {len(test_cases)} test cases
 """
         
         for idx, tc in enumerate(test_cases, 1):
-            md_content += f"""### {idx}. {tc.get('title', 'Untitled Test')}
+            # Safely get test case fields
+            if not isinstance(tc, dict):
+                tc = {"title": str(tc), "id": f"TC-{idx:03d}"}
+            
+            title = tc.get('title', 'Untitled Test')
+            tc_id = tc.get('id', 'N/A')
+            priority = tc.get('priority', 'medium')
+            tc_type = tc.get('type', 'functional')
+            duration = tc.get('estimated_duration', 'N/A')
+            
+            md_content += f"""### {idx}. {title}
 
-**Test ID**: `{tc.get('id', 'N/A')}`  
-**Priority**: {tc.get('priority', 'medium')}  
-**Type**: {tc.get('type', 'functional')}  
-**Estimated Duration**: {tc.get('estimated_duration', 'N/A')}
+**Test ID**: `{tc_id}`  
+**Priority**: {priority}  
+**Type**: {tc_type}  
+**Estimated Duration**: {duration}
 
 #### Preconditions
 """
-            for precond in tc.get('preconditions', []):
+            preconditions = tc.get('preconditions', [])
+            if not isinstance(preconditions, list):
+                preconditions = [preconditions] if preconditions else []
+            for precond in preconditions:
                 md_content += f"- {precond}\n"
             
             md_content += "\n#### Test Steps\n\n"
-            for step in tc.get('steps', []):
-                md_content += f"{step.get('step_number', '')}. **{step.get('action', '')}**\n"
-                md_content += f"   - Expected: {step.get('expected', '')}\n"
+            steps = tc.get('steps', [])
+            if not isinstance(steps, list):
+                steps = [steps] if steps else []
+            for step in steps:
+                if isinstance(step, dict):
+                    step_num = step.get('step_number', '')
+                    action = step.get('action', '')
+                    expected = step.get('expected', '')
+                else:
+                    step_num = ''
+                    action = str(step)
+                    expected = ''
+                md_content += f"{step_num}. **{action}**\n"
+                if expected:
+                    md_content += f"   - Expected: {expected}\n"
             
             md_content += "\n#### Expected Results\n\n"
-            for result in tc.get('expected_results', []):
+            expected_results = tc.get('expected_results', [])
+            if not isinstance(expected_results, list):
+                expected_results = [expected_results] if expected_results else []
+            for result in expected_results:
                 md_content += f"- {result}\n"
             
             md_content += f"\n#### Grounding Documents\n\n"
-            for doc in tc.get('grounding_docs', []):
+            grounding_docs = tc.get('grounding_docs', [])
+            if not isinstance(grounding_docs, list):
+                grounding_docs = [grounding_docs] if grounding_docs else []
+            for doc in grounding_docs:
                 md_content += f"- `{doc}`\n"
             
             md_content += "\n---\n\n"
@@ -306,8 +363,14 @@ Total: {len(test_cases)} test cases
     
     def _generate_selenium_script_content(self, test_case: Dict[str, Any], feature: str) -> str:
         """Generate content for a Selenium script."""
-        test_id = test_case.get('id', 'TC-000')
-        title = test_case.get('title', 'Untitled Test')
+        # Safely get test_id with fallback
+        test_id = str(test_case.get('id', 'TC-000') if isinstance(test_case, dict) else 'TC-000')
+        title = str(test_case.get('title', 'Untitled Test') if isinstance(test_case, dict) else 'Untitled Test')
+        priority = str(test_case.get('priority', 'medium') if isinstance(test_case, dict) else 'medium')
+        test_type = str(test_case.get('type', 'functional') if isinstance(test_case, dict) else 'functional')
+        
+        # Clean test_id for class name (remove special characters)
+        clean_test_id = ''.join(c if c.isalnum() else '' for c in test_id)
         
         script = f'''"""
 Selenium Test: {title}
@@ -327,7 +390,7 @@ from selenium.common.exceptions import TimeoutException
 import time
 
 
-class Test{test_id.replace("-", "")}:
+class Test{clean_test_id}:
     """Test class for {test_id}."""
     
     @pytest.fixture(autouse=True)
@@ -341,19 +404,32 @@ class Test{test_id.replace("-", "")}:
         """
         {title}
         
-        Priority: {test_case.get('priority', 'medium')}
-        Type: {test_case.get('type', 'functional')}
+        Priority: {priority}
+        Type: {test_type}
         """
         try:
 '''
         
+        # Get steps safely
+        steps = []
+        if isinstance(test_case, dict):
+            steps = test_case.get('steps', [])
+            if not isinstance(steps, list):
+                steps = [steps] if steps else []
+        
         # Generate step implementations
-        for step in test_case.get('steps', []):
-            action = step.get('action', '').lower()
-            step_num = step.get('step_number', 0)
+        for i, step in enumerate(steps, 1):
+            if isinstance(step, dict):
+                action = str(step.get('action', '')).lower()
+                step_num = step.get('step_number', i)
+                expected = str(step.get('expected', ''))
+            else:
+                action = str(step).lower()
+                step_num = i
+                expected = "N/A"
             
-            script += f'''            # Step {step_num}: {step.get('action', '')}
-            # Expected: {step.get('expected', '')}
+            script += f'''            # Step {step_num}: {action}
+            # Expected: {expected}
 '''
             
             if 'navigate' in action or 'open' in action or 'go to' in action:

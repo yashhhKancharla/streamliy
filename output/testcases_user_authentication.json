@@ -1,0 +1,31 @@
+[
+  {
+    "id": "TC-001",
+    "priority": "high",
+    "type": "functional",
+    "title": "Basic functionality test for User Authentication",
+    "preconditions": [
+      "System is accessible",
+      "Test data is prepared"
+    ],
+    "steps": [
+      {
+        "step_number": 1,
+        "action": "Access the feature",
+        "expected": "Feature loads successfully"
+      },
+      {
+        "step_number": 2,
+        "action": "Verify basic functionality",
+        "expected": "Feature works as expected"
+      }
+    ],
+    "expected_results": [
+      "Feature functions correctly"
+    ],
+    "grounding_docs": [
+      "product_specs.md"
+    ],
+    "estimated_duration": "30 seconds"
+  }
+]

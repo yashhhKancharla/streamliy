@@ -5,6 +5,7 @@ This document provides commands to view and interact with the ChromaDB vector da
 ## Quick Command List
 
 ### 1. **View Vector DB Statistics (Quickest Way)**
+
 ```bash
 python -c "
 from app.services.chroma_service import ChromaService
@@ -17,6 +18,7 @@ for key, value in stats.items():
 ```
 
 ### 2. **List All Ingested Documents**
+
 ```bash
 python -c "
 from app.services.chroma_service import ChromaService
@@ -31,6 +33,7 @@ for doc in sources:
 ```
 
 ### 3. **Query Vector DB and Display Results**
+
 ```bash
 python -c "
 from app.services.chroma_service import ChromaService
@@ -47,6 +50,7 @@ for i, result in enumerate(results['results'], 1):
 ```
 
 ### 4. **Get All Documents with Full Content**
+
 ```bash
 python -c "
 from app.services.chroma_service import ChromaService
@@ -66,6 +70,7 @@ else:
 ```
 
 ### 5. **Export Vector DB to JSON**
+
 ```bash
 python -c "
 import json
@@ -95,6 +100,7 @@ else:
 ```
 
 ### 6. **Display Database Statistics with Collection Info**
+
 ```bash
 python -c "
 from app.services.chroma_service import ChromaService
@@ -120,11 +126,13 @@ for source in sources:
 If your Flask server is running, use these curl commands:
 
 ### 7. **List Documents via API**
+
 ```bash
 curl http://localhost:5000/list-documents
 ```
 
 ### 8. **Query Vector DB via API**
+
 ```bash
 curl -X POST http://localhost:5000/query \
   -H "Content-Type: application/json" \
@@ -132,6 +140,7 @@ curl -X POST http://localhost:5000/query \
 ```
 
 ### 9. **Get DB Health via API**
+
 ```bash
 curl http://localhost:5000/health
 ```
@@ -151,7 +160,7 @@ import json
 
 def main():
     service = ChromaService()
-    
+
     while True:
         print("\n=== Vector DB Viewer ===")
         print("1. View statistics")
@@ -160,19 +169,19 @@ def main():
         print("4. View all documents")
         print("5. Export to JSON")
         print("0. Exit")
-        
+
         choice = input("\nSelect option: ")
-        
+
         if choice == "1":
             stats = service.get_stats()
             print("\n" + json.dumps(stats, indent=2))
-        
+
         elif choice == "2":
             sources = service.list_document_sources()
             print(f"\nFound {len(sources)} sources:")
             for doc in sources:
                 print(f"  - {doc['source']}: {doc['chunk_count']} chunks")
-        
+
         elif choice == "3":
             query = input("Enter search query: ")
             k = int(input("Number of results (default 5): ") or "5")
@@ -181,7 +190,7 @@ def main():
             for result in results['results']:
                 print(f"  - Score: {result['similarity_score']}")
                 print(f"    {result['content'][:100]}...")
-        
+
         elif choice == "4":
             collection = service.collection
             count = collection.count()
@@ -193,7 +202,7 @@ def main():
                     print(f"   {doc[:150]}...")
             else:
                 print("\nNo documents in database")
-        
+
         elif choice == "5":
             collection = service.collection
             count = collection.count()
@@ -216,7 +225,7 @@ def main():
                 print(f"\n✓ Exported {count} documents to {filename}")
             else:
                 print("\nNo documents to export")
-        
+
         elif choice == "0":
             break
 
@@ -225,6 +234,7 @@ if __name__ == "__main__":
 ```
 
 Run with:
+
 ```bash
 python view_vector_db.py
 ```
@@ -233,24 +243,25 @@ python view_vector_db.py
 
 ## Quick Reference
 
-| Command | Purpose |
-|---------|---------|
-| `python -c "from app.services.chroma_service import ChromaService; print(ChromaService().get_stats())"` | Quick stats |
-| `python -c "from app.services.chroma_service import ChromaService; print(ChromaService().list_document_sources())"` | List documents |
-| `python view_vector_db.py` | Interactive viewer |
-| `curl http://localhost:5000/list-documents` | API endpoint (server must be running) |
+| Command                                                                                                             | Purpose                               |
+| ------------------------------------------------------------------------------------------------------------------- | ------------------------------------- |
+| `python -c "from app.services.chroma_service import ChromaService; print(ChromaService().get_stats())"`             | Quick stats                           |
+| `python -c "from app.services.chroma_service import ChromaService; print(ChromaService().list_document_sources())"` | List documents                        |
+| `python view_vector_db.py`                                                                                          | Interactive viewer                    |
+| `curl http://localhost:5000/list-documents`                                                                         | API endpoint (server must be running) |
 
 ---
 
 ## Data Location
 
 Vector DB data is stored at:
+
 ```
 ./data/chroma/         # Main production database
 ./data/chroma_test/    # Test database
 ```
 
 Each contains:
+
 - `chroma.sqlite3` - Database file
 - `UUID folders` - Embedding storage
-
