@@ -1,7 +1,9 @@
 # Deployment Guide - Two Service Architecture
 
 ## Overview
+
 This app uses a **two-service architecture** for reliability and scalability:
+
 - **Service 1**: Flask Backend (Render) - API server
 - **Service 2**: Streamlit Frontend (Streamlit Cloud) - UI
 
@@ -10,23 +12,25 @@ This app uses a **two-service architecture** for reliability and scalability:
 ## Step 1: Deploy Backend to Render
 
 ### 1.1 Create Render Service
+
 1. Go to https://render.com/dashboard
 2. Click **"New +"** → **"Web Service"**
 3. Connect your GitHub repository `yashhhKancharla/streamliy`
 
 ### 1.2 Fill Render Configuration Form
 
-| Field | Value |
-|-------|-------|
-| **Name** | `streamliy-backend` |
-| **Language** | `Python 3` |
-| **Branch** | `main` |
-| **Root Directory** | (leave empty) |
-| **Build Command** | `pip install -r requirements.txt` |
-| **Start Command** | `bash render_backend.sh` |
-| **Region** | `Oregon (US West)` |
+| Field              | Value                             |
+| ------------------ | --------------------------------- |
+| **Name**           | `streamliy-backend`               |
+| **Language**       | `Python 3`                        |
+| **Branch**         | `main`                            |
+| **Root Directory** | (leave empty)                     |
+| **Build Command**  | `pip install -r requirements.txt` |
+| **Start Command**  | `bash render_backend.sh`          |
+| **Region**         | `Oregon (US West)`                |
 
 ### 1.3 Add Environment Variables (in Render Dashboard)
+
 Click **"Advanced"** and add:
 
 ```
@@ -40,6 +44,7 @@ CHROMA_COLLECTION=assignment_index
 ```
 
 ### 1.4 Deploy
+
 - Click **"Create Web Service"**
 - Wait for deployment to complete
 - Copy your backend URL: `https://streamliy-backend.render.com`
@@ -49,6 +54,7 @@ CHROMA_COLLECTION=assignment_index
 ## Step 2: Deploy Frontend to Streamlit Cloud
 
 ### 2.1 Push Code to GitHub
+
 ```bash
 git add .
 git commit -m "Deploy: Two-service architecture ready for production"
@@ -56,6 +62,7 @@ git push origin main
 ```
 
 ### 2.2 Deploy to Streamlit Cloud
+
 1. Go to https://share.streamlit.io
 2. Click **"New app"**
 3. Connect GitHub repository: `yashhhKancharla/streamliy`
@@ -65,6 +72,7 @@ git push origin main
    - **Main file path**: `ui_app.py`
 
 ### 2.3 Add Secrets (Important!)
+
 1. Click **"Advanced Settings"** ⚙️
 2. Go to **"Secrets"** tab
 3. Paste this (replace with your actual backend URL):
@@ -76,10 +84,12 @@ API_BASE_URL = "https://streamliy-backend.render.com"
 ```
 
 ### 2.4 Set Python Version
+
 1. In Advanced Settings → **"Python version"**: `3.11`
 2. Click **"Save"**
 
 ### 2.5 Deploy
+
 - Click **"Deploy"**
 - Wait for deployment to complete
 - Your app URL: `https://streamliy.streamlit.app`
@@ -89,16 +99,19 @@ API_BASE_URL = "https://streamliy-backend.render.com"
 ## Step 3: Verify Deployment
 
 ### Check Backend Health
+
 ```bash
 curl https://streamliy-backend.render.com/health
 ```
 
 Expected response:
+
 ```json
-{"status": "healthy", "services": {"flask": "ok", "chroma": "ok"}}
+{ "status": "healthy", "services": { "flask": "ok", "chroma": "ok" } }
 ```
 
 ### Check Frontend
+
 Open: https://streamliy.streamlit.app
 
 Should show "✅ Healthy" in the sidebar if backend connection works.
@@ -108,6 +121,7 @@ Should show "✅ Healthy" in the sidebar if backend connection works.
 ## Environment Variables Summary
 
 ### Backend (Render)
+
 ```
 OPENROUTER_API_KEY=your_key
 OPENROUTER_MODEL=tngtech/tng-r1t-chimera:free
@@ -117,6 +131,7 @@ HOST=0.0.0.0
 ```
 
 ### Frontend (Streamlit Cloud)
+
 ```
 OPENROUTER_API_KEY=your_key
 OPENROUTER_MODEL=tngtech/tng-r1t-chimera:free
@@ -128,13 +143,17 @@ API_BASE_URL=https://streamliy-backend.render.com
 ## Troubleshooting
 
 ### Issue: Frontend shows "❌ Unhealthy"
+
 **Solution**: Update `API_BASE_URL` in Streamlit Cloud secrets with correct backend URL
 
 ### Issue: Backend deployment fails
+
 **Solution**: Check Render logs → ensure all dependencies in `requirements.txt` are compatible
 
 ### Issue: Port conflicts
+
 **Solution**: Don't run combined services locally. Use separate scripts and ports:
+
 - Backend: `python start_server.py` (port 8000)
 - Frontend: `streamlit run ui_app.py --server.port 8501` (port 8501)
 
@@ -143,12 +162,14 @@ API_BASE_URL=https://streamliy-backend.render.com
 ## Local Development (Optional)
 
 ### Terminal 1 - Backend
+
 ```bash
 python start_server.py
 # Backend runs on http://localhost:8000
 ```
 
 ### Terminal 2 - Frontend
+
 ```bash
 API_BASE_URL=http://localhost:8000 streamlit run ui_app.py
 # Frontend runs on http://localhost:8501
@@ -158,11 +179,11 @@ API_BASE_URL=http://localhost:8000 streamlit run ui_app.py
 
 ## Cost Breakdown
 
-| Service | Cost | Notes |
-|---------|------|-------|
-| Render Backend | $7/month | Includes 750 hours/month |
-| Streamlit Cloud | FREE | Unlimited apps |
-| **Total** | **$7/month** | Very affordable! |
+| Service         | Cost         | Notes                    |
+| --------------- | ------------ | ------------------------ |
+| Render Backend  | $7/month     | Includes 750 hours/month |
+| Streamlit Cloud | FREE         | Unlimited apps           |
+| **Total**       | **$7/month** | Very affordable!         |
 
 ---
 
