@@ -1,19 +1,23 @@
 #!/bin/bash
-# Build script for Render - Forces Python 3.11
+# Build script for Render - Forces binary wheels only
 
 set -e
 
 echo "=== Render Build Script ==="
-echo "Python version check:"
-python3.11 --version || python3 --version
+echo "Python version:"
+python --version
 
 echo ""
-echo "=== Installing dependencies with Python 3.11 ==="
-python3.11 -m pip install --upgrade pip setuptools wheel || python3 -m pip install --upgrade pip setuptools wheel
+echo "=== Upgrading pip ==="
+pip install --upgrade pip setuptools wheel
 
 echo ""
-echo "=== Installing requirements ==="
-python3.11 -m pip install -r requirements.txt || python3 -m pip install -r requirements.txt
+echo "=== Installing requirements (prefer binary wheels) ==="
+pip install --prefer-binary -r requirements.txt
+
+echo ""
+echo "=== Creating directories ==="
+mkdir -p logs data/chroma output
 
 echo ""
 echo "=== Build complete ==="
