@@ -21,6 +21,8 @@ st.set_page_config(
 )
 
 # API Base URL - Use environment variable or default to localhost
+# When running on Render, backend runs on localhost:8000
+# When running on Streamlit Cloud, point to deployed backend URL
 API_BASE_URL = os.getenv("API_BASE_URL", "http://localhost:8000")
 
 # Custom CSS

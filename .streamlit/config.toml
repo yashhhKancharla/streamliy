@@ -10,16 +10,16 @@ font = "sans serif"
 
 [server]
 port = 8501
-address = "localhost"
-headless = false
-runOnSave = true
-enableCORS = true
-enableXsrfProtection = true
+headless = true
+runOnSave = false
+enableCORS = false
+enableXsrfProtection = false
 
 [browser]
 gatherUsageStats = false
-serverAddress = "localhost"
-serverPort = 8501
 
 [logger]
 level = "info"
+
+[client]
+showErrorDetails = true
